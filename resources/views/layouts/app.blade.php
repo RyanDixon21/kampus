@@ -14,6 +14,7 @@
     <nav class="bg-primary-800/95 backdrop-blur-md shadow-lg fixed w-full top-0 z-50 border-b border-primary-700/50" 
          x-data="{ 
              mobileMenuOpen: false, 
+             akademikDropdown: false,
              activeSection: 'beranda',
              init() {
                  this.updateActiveSection();
@@ -37,10 +38,19 @@
                  }
              }
          }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Decorative Background Textures -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none z-0">
+            <!-- Dot Pattern -->
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <!-- Decorative Shapes -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full -translate-y-1/2 translate-x-1/2 opacity-20"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-300 rounded-full translate-y-1/2 -translate-x-1/2 opacity-15"></div>
+            <div class="absolute top-1/2 left-1/4 w-24 h-24 border-2 border-blue-200 rounded-lg rotate-45 opacity-20"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
+                <a href="{{ route('home') }}" class="flex items-center space-x-3 group z-10">
                     @php
                         $logo = $settings['logo'] ?? null;
                         $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
@@ -55,7 +65,7 @@
                 </a>
 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex space-x-8 items-center">
+                <div class="hidden md:flex space-x-8 items-center z-10">
                     <a href="{{ route('home') }}" 
                        @click="activeSection = 'beranda'"
                        class="text-white/90 hover:text-white transition-colors duration-200 font-medium relative py-2"
@@ -88,15 +98,60 @@
                         <span class="absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300"
                               :class="activeSection === 'tendik' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
                     </a>
-                    <a href="{{ route('registration.create') }}" 
-                       class="ml-2 bg-white text-primary-700 px-6 py-2.5 rounded-lg hover:bg-blue-50 hover:shadow-lg transition-all duration-200 font-bold">
-                        Pendaftaran
-                    </a>
+                    
+                    <!-- Akademik Dropdown -->
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                        <button @click="open = !open"
+                                class="ml-2 bg-white text-primary-700 px-6 py-2.5 rounded-lg hover:bg-blue-50 hover:shadow-lg transition-all duration-200 font-bold flex items-center gap-2">
+                            Akademik
+                            <svg class="w-4 h-4 transition-transform duration-200" 
+                                 :class="{ 'rotate-180': open }"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-95"
+                             @click="open = false"
+                             class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50"
+                             style="display: none;">
+                            <div class="py-2">
+                                <a href="{{ route('registration.create') }}" 
+                                   class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-primary-700 transition-colors duration-200">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                    </svg>
+                                    <span class="font-medium">Pendaftaran</span>
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-primary-700 transition-colors duration-200">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    <span class="font-medium">KRS</span>
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-primary-700 transition-colors duration-200">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                    </svg>
+                                    <span class="font-medium">UBK</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Mobile Menu Button -->
                 <button @click="mobileMenuOpen = !mobileMenuOpen" 
-                        class="md:hidden text-white hover:text-blue-100 focus:outline-none">
+                        class="md:hidden text-white hover:text-blue-100 focus:outline-none z-10">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -112,8 +167,14 @@
                  x-transition:leave="transition ease-in duration-150"
                  x-transition:leave-start="opacity-100 transform translate-y-0"
                  x-transition:leave-end="opacity-0 transform -translate-y-2"
-                 class="md:hidden pb-4 bg-primary-900/95 backdrop-blur-md border-t border-primary-700/50">
-                <div class="flex flex-col space-y-1 p-4">
+                 class="md:hidden pb-4 bg-primary-900/95 backdrop-blur-md border-t border-primary-700/50 relative"
+                 x-data="{ mobileAkademikOpen: false }">
+                <!-- Mobile Menu Background Texture -->
+                <div class="absolute inset-0 opacity-5 pointer-events-none z-0">
+                    <div class="absolute inset-0" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                </div>
+                
+                <div class="flex flex-col space-y-1 p-4 relative z-10">
                     <a href="{{ route('home') }}" 
                        @click="activeSection = 'beranda'; mobileMenuOpen = false"
                        class="text-white/90 hover:text-white py-3 px-4 rounded-lg transition-all duration-200 font-medium"
@@ -138,18 +199,59 @@
                        :class="{ 'bg-white/10 text-white': activeSection === 'tendik' }">
                         Tendik
                     </a>
-                    <a href="{{ route('registration.create') }}" 
-                       class="bg-white text-primary-700 px-6 py-3 rounded-lg hover:bg-blue-50 transition-all duration-200 font-bold text-center mt-2"
-                       @click="mobileMenuOpen = false">
-                        Pendaftaran
-                    </a>
+                    
+                    <!-- Akademik Dropdown Mobile -->
+                    <div class="mt-2">
+                        <button @click="mobileAkademikOpen = !mobileAkademikOpen"
+                                class="w-full bg-white text-primary-700 px-6 py-3 rounded-lg hover:bg-blue-50 transition-all duration-200 font-bold flex items-center justify-between">
+                            <span>Akademik</span>
+                            <svg class="w-4 h-4 transition-transform duration-200" 
+                                 :class="{ 'rotate-180': mobileAkademikOpen }"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Mobile Dropdown Items -->
+                        <div x-show="mobileAkademikOpen"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform -translate-y-2"
+                             x-transition:enter-end="opacity-100 transform translate-y-0"
+                             class="mt-2 space-y-1 pl-4"
+                             style="display: none;">
+                            <a href="{{ route('registration.create') }}" 
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-white/90 hover:text-white py-2 px-4 rounded-lg hover:bg-white/10 transition-all duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                </svg>
+                                <span>Pendaftaran</span>
+                            </a>
+                            <a href="#" 
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-white/90 hover:text-white py-2 px-4 rounded-lg hover:bg-white/10 transition-all duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <span>KRS</span>
+                            </a>
+                            <a href="#" 
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-white/90 hover:text-white py-2 px-4 rounded-lg hover:bg-white/10 transition-all duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                </svg>
+                                <span>UBK</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-20">
+    <main class="pt-24">
         @yield('content')
     </main>
 

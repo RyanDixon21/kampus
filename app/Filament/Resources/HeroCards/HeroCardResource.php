@@ -81,9 +81,28 @@ class HeroCardResource extends Resource
 
                 TextInput::make('button_link')
                     ->label('Link Tombol')
-                    ->url()
                     ->maxLength(255)
-                    ->helperText('Contoh: /registration atau https://example.com'),
+                    ->placeholder('/home, /news, /registration, atau https://example.com')
+                    ->helperText('Contoh: /registration atau https://example.com')
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if (empty($value)) {
+                                return;
+                            }
+                            
+                            // Allow internal paths starting with /
+                            if (str_starts_with($value, '/')) {
+                                return;
+                            }
+                            
+                            // Allow full URLs with http:// or https://
+                            if (filter_var($value, FILTER_VALIDATE_URL)) {
+                                return;
+                            }
+                            
+                            $fail('Link harus berupa path internal (contoh: /home) atau URL lengkap (contoh: https://example.com)');
+                        };
+                    }),
 
                 TextInput::make('order')
                     ->label('Urutan')

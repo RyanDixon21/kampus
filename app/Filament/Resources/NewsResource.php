@@ -66,6 +66,10 @@ class NewsResource extends Resource
                     ->disk('public')
                     ->visibility('public')
                     ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth('1920')
+                    ->imageResizeTargetHeight('1080')
                     ->imageEditorAspectRatios([
                         '16:9',
                         '4:3',
@@ -74,7 +78,7 @@ class NewsResource extends Resource
                     ->maxSize(5120)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->required()
-                    ->helperText('Gambar ini akan menjadi thumbnail di halaman utama')
+                    ->helperText('Ukuran rekomendasi: 1920x1080px (16:9). Gambar akan otomatis di-resize.')
                     ->columnSpanFull(),
 
                 FileUpload::make('images')

@@ -68,9 +68,14 @@ class SettingResource extends Resource
                             ->image()
                             ->directory('settings')
                             ->imageEditor()
+                            ->imageResizeMode('contain')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('500')
+                            ->imageResizeTargetHeight('500')
                             ->maxSize(2048)
                             ->disk('public')
-                            ->visibility('public'),
+                            ->visibility('public')
+                            ->helperText('Ukuran rekomendasi: 500x500px (rasio 1:1). Logo akan otomatis di-resize.'),
                         
                         Textarea::make('address')
                             ->label('Alamat')

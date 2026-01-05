@@ -1,23 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Page Header -->
-<section class="bg-primary-800 text-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
-                Semua Berita Terkini
-            </h1>
-            <p class="text-lg text-blue-200">
-                Informasi terkini terkait Civitas Academica {{ $settings['university_name'] ?? 'Sekolah Tinggi Teknologi Pratama Adi' }}
-            </p>
-        </div>
-    </div>
-</section>
-
 <!-- News Grid Section -->
-<section class="py-16 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-24 bg-white relative overflow-hidden">
+    <!-- Decorative Shapes -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full -translate-y-1/2 translate-x-1/2 opacity-60"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-200 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50"></div>
+    <div class="absolute top-1/2 left-1/4 w-32 h-32 border-4 border-blue-300 rounded-lg rotate-45 opacity-30"></div>
+    <div class="absolute top-20 right-1/4 w-24 h-24 bg-blue-50 rounded-full opacity-70"></div>
+    <div class="absolute bottom-20 right-1/3 w-40 h-40 border-4 border-blue-200 rounded-full opacity-40"></div>
+    
+    <!-- Dot Pattern Background -->
+    <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(circle, #1e40af 1px, transparent 1px); background-size: 30px 30px;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+                {{ $settings['news_section_title'] ?? 'Berita Terkini' }}
+            </h2>
+            <p class="text-blue-600 text-lg font-medium">{{ $settings['news_section_description'] ?? 'Informasi terkini terkait Civitas Academica' }}</p>
+        </div>
+        
         @if($allNews->count() > 0)
         <!-- News Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
