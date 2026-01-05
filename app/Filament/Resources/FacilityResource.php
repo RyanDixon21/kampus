@@ -6,16 +6,17 @@ use App\Filament\Resources\FacilityResource\Pages;
 use App\Models\Facility;
 use BackedEnum;
 use Filament\Actions;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class FacilityResource extends Resource
@@ -74,23 +75,44 @@ class FacilityResource extends Resource
                     ->helperText('Gambar-gambar ini akan ditampilkan di halaman detail fasilitas')
                     ->columnSpanFull(),
 
-                Textarea::make('description')
+                RichEditor::make('description')
                     ->label('Deskripsi')
                     ->required()
-                    ->rows(4)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('facilities/content-images')
+                    ->fileAttachmentsVisibility('public')
+                    ->toolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])
+                    ->helperText('Gunakan H2 dan H3 untuk heading/ukuran font berbeda. Klik ikon paperclip untuk menambahkan gambar.'),
 
-                TextInput::make('order')
-                    ->label('Urutan')
-                    ->numeric()
-                    ->default(0)
-                    ->required()
-                    ->helperText('Urutan tampilan fasilitas (angka lebih kecil akan ditampilkan lebih dulu)'),
+                Select::make('status')
+                    ->label('Status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                    ])
+                    ->default('draft')
+                    ->required(),
 
-                Toggle::make('is_active')
-                    ->label('Aktif')
-                    ->default(true)
-                    ->helperText('Hanya fasilitas aktif yang akan ditampilkan di website'),
+                DateTimePicker::make('published_at')
+                    ->label('Tanggal Publikasi')
+                    ->default(now())
+                    ->required(),
             ]);
     }
 
@@ -110,19 +132,25 @@ class FacilityResource extends Resource
                     ->sortable()
                     ->limit(50),
 
-                TextColumn::make('order')
-                    ->label('Urutan')
-                    ->sortable()
-                    ->alignCenter(),
-
-                IconColumn::make('is_active')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->trueColor('success')
-                    ->falseColor('danger')
-                    ->alignCenter(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'warning',
+                        'published' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        default => $state,
+                    })
+                    ->sortable(),
+
+                TextColumn::make('published_at')
+                    ->label('Tanggal Publikasi')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
 
                 TextColumn::make('created_at')
                     ->label('Dibuat')
@@ -136,6 +164,14 @@ class FacilityResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filters([
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                    ]),
+            ])
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
@@ -145,8 +181,7 @@ class FacilityResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('order', 'asc')
-            ->reorderable('order');
+            ->defaultSort('published_at', 'desc');
     }
 
     public static function getPages(): array

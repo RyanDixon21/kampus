@@ -8,7 +8,8 @@ use App\Http\Controllers\CBTController;
 // Home page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// News detail route
+// News routes
+Route::get('/news', [HomeController::class, 'allNews'])->name('news.index');
 Route::get('/news/{news:slug}', [HomeController::class, 'showNews'])->name('news.show');
 
 // Facility detail route

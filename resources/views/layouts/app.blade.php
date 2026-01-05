@@ -45,11 +45,12 @@
                         $logo = $settings['logo'] ?? null;
                         $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
                         $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
+                        $universitySlogan = $settings['university_slogan'] ?? 'Sekolah Tinggi Teknologi';
                     @endphp
                     <img src="{{ $logoUrl }}" alt="{{ $universityShortName }} Logo" class="h-12 w-12 object-contain transform group-hover:scale-105 transition-transform duration-200">
                     <div class="hidden sm:block">
                         <h1 class="text-xl font-bold text-white">{{ $universityShortName }}</h1>
-                        <p class="text-xs text-blue-100">Sekolah Tinggi Teknologi</p>
+                        <p class="text-xs text-blue-100">{{ $universitySlogan }}</p>
                     </div>
                 </a>
 
@@ -163,16 +164,20 @@
                             $logo = $settings['logo'] ?? null;
                             $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
                             $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
+                            $universitySlogan = $settings['university_slogan'] ?? 'Sekolah Tinggi Teknologi';
+                            $footerDescription = $settings['footer_description'] ?? null;
                         @endphp
                         <img src="{{ $logoUrl }}" alt="{{ $universityShortName }} Logo" class="h-12 w-12 object-contain">
                         <div>
                             <h3 class="text-lg font-bold">{{ $universityShortName }}</h3>
-                            <p class="text-sm text-primary-100">Sekolah Tinggi Teknologi</p>
+                            <p class="text-sm text-primary-100">{{ $universitySlogan }}</p>
                         </div>
                     </div>
+                    @if($footerDescription)
                     <p class="text-primary-100 text-sm leading-relaxed">
-                        {{ $universityShortName }}
+                        {{ $footerDescription }}
                     </p>
+                    @endif
                 </div>
 
                 <!-- Contact -->

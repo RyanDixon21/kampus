@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Facility extends Model
 {
@@ -12,40 +13,29 @@ class Facility extends Model
         'description',
         'image',
         'images',
-        'order',
-        'is_active'
+        'status',
+        'published_at'
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'order' => 'integer',
+        'published_at' => 'datetime',
         'images' => 'array',
     ];
 
     /**
-     * Scope to get only active facilities
+     * Scope to get only published facilities
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopePublished($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('status', 'published')
+            ->where('published_at', '<=', now());
     }
 
     /**
-     * Default ordering by order column
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('order', 'asc');
-    }
-
-    /**
-     * Boot method to apply default ordering and auto-generate slug
+     * Boot method to auto-generate slug
      */
     protected static function boot()
     {
@@ -53,18 +43,14 @@ class Facility extends Model
 
         static::creating(function ($facility) {
             if (empty($facility->slug)) {
-                $facility->slug = \Illuminate\Support\Str::slug($facility->name);
+                $facility->slug = Str::slug($facility->name);
             }
         });
 
         static::updating(function ($facility) {
-            if ($facility->isDirty('name') && empty($facility->slug)) {
-                $facility->slug = \Illuminate\Support\Str::slug($facility->name);
+            if ($facility->isDirty('name')) {
+                $facility->slug = Str::slug($facility->name);
             }
-        });
-
-        static::addGlobalScope('ordered', function ($query) {
-            $query->orderBy('order', 'asc');
         });
     }
 }

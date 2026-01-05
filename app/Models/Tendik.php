@@ -10,6 +10,7 @@ class Tendik extends Model
 
     protected $fillable = [
         'name',
+        'nidn',
         'position',
         'photo',
         'email',

@@ -28,8 +28,8 @@ class HomeController extends Controller
             ->get();
         
         // Load active facilities ordered by order column
-        $facilities = Facility::active()
-            ->orderBy('order')
+        $facilities = Facility::published()
+            ->latest('published_at')
             ->get();
         
         // Load active tendik
@@ -39,6 +39,23 @@ class HomeController extends Controller
         $heroCards = HeroCard::active()->ordered()->get();
         
         return view('home', compact('settings', 'latestNews', 'facilities', 'tendik', 'heroCards'));
+    }
+
+    /**
+     * Display all news page
+     */
+    public function allNews()
+    {
+        // Load settings
+        $settings = Setting::getSettings();
+        
+        // Load all published news with pagination
+        $allNews = News::with('author')
+            ->published()
+            ->latest('published_at')
+            ->paginate(12);
+        
+        return view('news-index', compact('settings', 'allNews'));
     }
 
     /**
@@ -69,8 +86,8 @@ class HomeController extends Controller
      */
     public function showFacility(Facility $facility)
     {
-        // Check if facility is active
-        if (!$facility->is_active) {
+        // Check if facility is published
+        if ($facility->status !== 'published' || $facility->published_at > now()) {
             abort(404);
         }
 
@@ -78,9 +95,9 @@ class HomeController extends Controller
         $settings = Setting::getSettings();
         
         // Load related facilities
-        $relatedFacilities = Facility::active()
+        $relatedFacilities = Facility::published()
             ->where('id', '!=', $facility->id)
-            ->orderBy('order')
+            ->latest('published_at')
             ->take(3)
             ->get();
 

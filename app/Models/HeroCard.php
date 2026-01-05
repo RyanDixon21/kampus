@@ -15,10 +15,12 @@ class HeroCard extends Model
         'button_link',
         'order',
         'is_active',
+        'show_logo',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'show_logo' => 'boolean',
     ];
 
     public function scopeActive($query)

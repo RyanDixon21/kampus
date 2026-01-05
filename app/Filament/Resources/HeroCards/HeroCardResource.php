@@ -96,6 +96,11 @@ class HeroCardResource extends Resource
                     ->label('Aktif')
                     ->default(true)
                     ->helperText('Hanya slide aktif yang akan ditampilkan'),
+
+                Toggle::make('show_logo')
+                    ->label('Tampilkan Logo')
+                    ->default(true)
+                    ->helperText('Tampilkan logo kampus di slide ini'),
             ]);
     }
 
@@ -127,6 +132,15 @@ class HeroCardResource extends Resource
 
                 IconColumn::make('is_active')
                     ->label('Status')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
+                    ->alignCenter(),
+
+                IconColumn::make('show_logo')
+                    ->label('Logo')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')

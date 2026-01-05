@@ -51,6 +51,11 @@ class Setting extends Model
      */
     public static function set(string $key, $value): void
     {
+        // Convert arrays to JSON
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+        
         self::updateOrCreate(['key' => $key], ['value' => $value]);
         
         // Invalidate both individual setting cache and all settings cache
@@ -66,7 +71,17 @@ class Setting extends Model
     public static function getSettings(): array
     {
         return Cache::remember('settings.all', 3600, function () {
-            return self::pluck('value', 'key')->toArray();
+            $settings = self::pluck('value', 'key')->toArray();
+            
+            // Decode JSON values
+            foreach ($settings as $key => $value) {
+                $decoded = json_decode($value, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $settings[$key] = $decoded;
+                }
+            }
+            
+            return $settings;
         });
     }
 }

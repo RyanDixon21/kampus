@@ -43,6 +43,22 @@ class NewsResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull(),
 
+                Select::make('category')
+                    ->label('Kategori')
+                    ->options([
+                        'Prestasi' => 'Prestasi',
+                        'Akademik' => 'Akademik',
+                        'Pendidikan' => 'Pendidikan',
+                        'Penelitian' => 'Penelitian',
+                        'Pengabdian Masyarakat' => 'Pengabdian Masyarakat',
+                        'Kemahasiswaan' => 'Kemahasiswaan',
+                        'Pengumuman' => 'Pengumuman',
+                    ])
+                    ->searchable()
+                    ->nullable()
+                    ->helperText('Pilih kategori berita untuk ditampilkan sebagai badge')
+                    ->columnSpanFull(),
+
                 FileUpload::make('thumbnail')
                     ->label('Thumbnail')
                     ->image()
@@ -79,19 +95,26 @@ class NewsResource extends Resource
                     ->label('Konten')
                     ->required()
                     ->columnSpanFull()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('news/content-images')
+                    ->fileAttachmentsVisibility('public')
                     ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'underline',
-                        'strike',
-                        'link',
-                        'bulletList',
-                        'orderedList',
+                        'attachFiles',
                         'blockquote',
+                        'bold',
+                        'bulletList',
                         'codeBlock',
-                        'undo',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
                         'redo',
-                    ]),
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])
+                    ->helperText('Gunakan H2 dan H3 untuk heading/ukuran font berbeda. Klik ikon paperclip untuk menambahkan gambar.'),
 
                 Select::make('status')
                     ->label('Status')
@@ -124,6 +147,13 @@ class NewsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(50),
+
+                TextColumn::make('category')
+                    ->label('Kategori')
+                    ->badge()
+                    ->color('info')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('status')
                     ->label('Status')

@@ -41,6 +41,11 @@ class TendikResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull(),
 
+                TextInput::make('nidn')
+                    ->label('NIDN')
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+
                 TextInput::make('position')
                     ->label('Jabatan')
                     ->required()
@@ -48,9 +53,9 @@ class TendikResource extends Resource
                     ->columnSpanFull(),
 
                 FileUpload::make('photo')
-                    ->label('Foto (Thumbnail)')
+                    ->label('Foto')
                     ->image()
-                    ->directory('tendik/thumbnails')
+                    ->directory('tendik')
                     ->disk('public')
                     ->visibility('public')
                     ->imageEditor()
@@ -62,21 +67,7 @@ class TendikResource extends Resource
                     ->maxSize(5120)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->required()
-                    ->helperText('Foto ini akan menjadi thumbnail di halaman utama')
-                    ->columnSpanFull(),
-
-                FileUpload::make('images')
-                    ->label('Foto Tambahan')
-                    ->image()
-                    ->multiple()
-                    ->directory('tendik/gallery')
-                    ->disk('public')
-                    ->visibility('public')
-                    ->imageEditor()
-                    ->maxSize(5120)
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
-                    ->reorderable()
-                    ->helperText('Foto-foto ini akan ditampilkan di halaman detail tendik')
+                    ->helperText('Foto akan ditampilkan di halaman utama')
                     ->columnSpanFull(),
 
                 TextInput::make('email')
@@ -110,6 +101,12 @@ class TendikResource extends Resource
 
                 TextColumn::make('name')
                     ->label('Nama')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50),
+
+                TextColumn::make('nidn')
+                    ->label('NIDN')
                     ->searchable()
                     ->sortable()
                     ->limit(50),

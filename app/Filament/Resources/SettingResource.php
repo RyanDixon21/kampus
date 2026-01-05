@@ -49,6 +49,20 @@ class SettingResource extends Resource
                             ->helperText('Contoh: STT Pratama Adi')
                             ->default(fn () => Setting::get('university_short_name', 'STT Pratama Adi')),
                         
+                        TextInput::make('university_slogan')
+                            ->label('Slogan/Tagline')
+                            ->maxLength(255)
+                            ->helperText('Contoh: Sekolah Tinggi Teknologi')
+                            ->default(fn () => Setting::get('university_slogan', 'Sekolah Tinggi Teknologi')),
+                        
+                        Textarea::make('footer_description')
+                            ->label('Deskripsi Footer')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->helperText('Deskripsi singkat yang ditampilkan di footer website')
+                            ->placeholder('Contoh: STT Pratama Adi adalah institusi pendidikan tinggi yang berfokus pada pengembangan teknologi dan inovasi.')
+                            ->default(fn () => Setting::get('footer_description')),
+                        
                         FileUpload::make('logo')
                             ->label('Logo')
                             ->image()
@@ -77,6 +91,71 @@ class SettingResource extends Resource
                             ->default(fn () => Setting::get('email')),
                     ])
                     ->columns(2),
+
+                Section::make('Konten Halaman - Section Berita')
+                    ->schema([
+                        TextInput::make('news_section_title')
+                            ->label('Judul Section Berita')
+                            ->maxLength(255)
+                            ->default(fn () => Setting::get('news_section_title', 'Berita Terkini'))
+                            ->helperText('Judul yang ditampilkan di section berita'),
+                        
+                        Textarea::make('news_section_description')
+                            ->label('Deskripsi Section Berita')
+                            ->rows(2)
+                            ->maxLength(500)
+                            ->default(fn () => Setting::get('news_section_description', 'Informasi terkini terkait Civitas Academica'))
+                            ->helperText('Deskripsi singkat di bawah judul section berita'),
+                    ])
+                    ->columns(1),
+
+                Section::make('Konten Halaman - Section Fasilitas')
+                    ->schema([
+                        TextInput::make('facilities_section_title')
+                            ->label('Judul Section Fasilitas')
+                            ->maxLength(255)
+                            ->default(fn () => Setting::get('facilities_section_title', 'Fasilitas Modern'))
+                            ->helperText('Judul yang ditampilkan di section fasilitas'),
+                        
+                        Textarea::make('facilities_section_description')
+                            ->label('Deskripsi Section Fasilitas')
+                            ->rows(2)
+                            ->maxLength(500)
+                            ->default(fn () => Setting::get('facilities_section_description', 'Fasilitas lengkap untuk mendukung kegiatan belajar mengajar'))
+                            ->helperText('Deskripsi singkat di bawah judul section fasilitas'),
+                    ])
+                    ->columns(1),
+
+                Section::make('Lokasi Kampus')
+                    ->schema([
+                        FileUpload::make('campus_images')
+                            ->label('Foto Kampus (Maksimal 4)')
+                            ->image()
+                            ->multiple()
+                            ->maxFiles(4)
+                            ->directory('settings/campus')
+                            ->imageEditor()
+                            ->maxSize(5120)
+                            ->disk('public')
+                            ->visibility('public')
+                            ->helperText('Upload maksimal 4 foto kampus untuk ditampilkan dalam kolase di section lokasi')
+                            ->reorderable()
+                            ->default(function () {
+                                $value = Setting::get('campus_images');
+                                if (is_string($value)) {
+                                    return json_decode($value, true) ?? [];
+                                }
+                                return is_array($value) ? $value : [];
+                            }),
+                        
+                        Textarea::make('maps_embed')
+                            ->label('Google Maps Embed Code')
+                            ->rows(5)
+                            ->helperText('Paste kode embed dari Google Maps (iframe)')
+                            ->placeholder('<iframe src="https://www.google.com/maps/embed?..." width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>')
+                            ->default(fn () => Setting::get('maps_embed')),
+                    ])
+                    ->columns(1),
 
                 Section::make('Social Media')
                     ->schema([
