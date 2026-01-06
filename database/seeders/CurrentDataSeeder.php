@@ -20,8 +20,14 @@ class CurrentDataSeeder extends Seeder
      */
     public function run(): void
     {
-        // Disable foreign key checks
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Disable foreign key checks (compatible with both MySQL and SQLite)
+        $driver = DB::getDriverName();
+        
+        if ($driver === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        } elseif ($driver === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = OFF;');
+        }
 
         // Clear existing data
         Setting::truncate();
@@ -31,7 +37,11 @@ class CurrentDataSeeder extends Seeder
         Tendik::truncate();
 
         // Re-enable foreign key checks
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        if ($driver === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        } elseif ($driver === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = ON;');
+        }
 
         $this->seedSettings();
         $this->seedHeroCards();
@@ -102,7 +112,7 @@ class CurrentDataSeeder extends Seeder
             'category' => 'Penelitian',
             'status' => 'published',
             'published_at' => '2026-01-05 07:35:11',
-            'created_by' => 1,
+            'created_by' => null, // Set to null since user might not exist
             'images' => ['news/gallery/01KE6HB7VMBZ68T61STBRG3KAA.jpg'],
         ]);
 
