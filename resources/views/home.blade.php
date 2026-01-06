@@ -66,7 +66,7 @@
                     
                     <!-- Logo (Optional) -->
                     @if($slide->show_logo)
-                    <div class="mb-8 animate-fade-in-down">
+                    <div class="mt-20 mb-8 animate-fade-in-down">
                         @php
                             $logo = $settings['logo'] ?? null;
                             $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
@@ -156,7 +156,7 @@
                 
                 <!-- Logo -->
                 @if(($settings['show_hero_logo'] ?? true))
-                <div class="mb-8 animate-fade-in-down">
+                <div class="mt-20 mb-8 animate-fade-in-down">
                     @php
                         $logo = $settings['logo'] ?? null;
                         $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
@@ -202,7 +202,7 @@
 </section>
 
 <!-- Berita Section -->
-<section id="berita" class="relative py-24 bg-white overflow-hidden">
+<section id="berita" class="relative py-20 bg-white overflow-hidden">
     <!-- Decorative Shapes -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full -translate-y-1/2 translate-x-1/2 opacity-60"></div>
     <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-200 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50"></div>
