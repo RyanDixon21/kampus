@@ -21,7 +21,16 @@ class RegistrationController extends Controller
      */
     public function create()
     {
-        return view('registration.create');
+        // Check if registration is open
+        $registrationOpen = Setting::get('registration_open', true);
+        
+        // Get settings for logo
+        $settings = Setting::pluck('value', 'key')->toArray();
+        
+        return view('registration.create', [
+            'registrationOpen' => $registrationOpen,
+            'settings' => $settings
+        ]);
     }
     
     /**
@@ -31,6 +40,15 @@ class RegistrationController extends Controller
      */
     public function store(RegistrationRequest $request)
     {
+        // Check if registration is open
+        $registrationOpen = Setting::get('registration_open', true);
+        
+        if (!$registrationOpen) {
+            return redirect()
+                ->route('registration.create')
+                ->with('error', 'Maaf, pendaftaran mahasiswa baru saat ini sedang ditutup.');
+        }
+        
         // Register using service with validated data
         $registration = $this->registrationService->register($request->validated());
         

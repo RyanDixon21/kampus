@@ -11,7 +11,7 @@
 </head>
 <body class="bg-gradient-to-br from-primary-900 via-primary-800 to-blue-900 font-sans antialiased">
     <!-- Navigation -->
-    <nav class="bg-white shadow-md fixed w-full top-0 z-50 transition-all duration-300" 
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50 transition-all duration-300 border-b-4 border-blue-500" 
          x-data="{ 
              mobileMenuOpen: false, 
              akademikDropdown: false,
