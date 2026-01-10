@@ -8,6 +8,7 @@ use App\Models\Facility;
 use App\Models\Tendik;
 use App\Models\HeroCard;
 use App\Models\WhyChooseUs;
+use App\Models\About;
 
 class HomeController extends Controller
 {
@@ -108,5 +109,22 @@ class HomeController extends Controller
             ->get();
 
         return view('facility-detail', compact('facility', 'settings', 'relatedFacilities'));
+    }
+
+    /**
+     * Display about page
+     */
+    public function about()
+    {
+        // Load settings
+        $settings = Setting::getSettings();
+        
+        // Load about content grouped by section
+        $tentang = About::active()->bySection('tentang')->ordered()->get();
+        $visi = About::active()->bySection('visi')->ordered()->get();
+        $misi = About::active()->bySection('misi')->ordered()->get();
+        $sejarah = About::active()->bySection('sejarah')->ordered()->get();
+
+        return view('about', compact('settings', 'tentang', 'visi', 'misi', 'sejarah'));
     }
 }

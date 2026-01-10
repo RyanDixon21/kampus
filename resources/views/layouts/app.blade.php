@@ -68,6 +68,10 @@
                        :class="{ 'text-blue-500 bg-blue-50': activeSection === 'beranda' }">
                         Beranda
                     </a>
+                    <a href="{{ route('about') }}" 
+                       class="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium">
+                        Tentang
+                    </a>
                     <a href="{{ route('home') }}#berita" 
                        @click="activeSection = 'berita'"
                        class="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium"
@@ -178,6 +182,11 @@
                        class="text-gray-700 hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium"
                        :class="{ 'text-blue-500 bg-blue-50': activeSection === 'beranda' }">
                         Beranda
+                    </a>
+                    <a href="{{ route('about') }}" 
+                       @click="mobileMenuOpen = false"
+                       class="text-gray-700 hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium">
+                        Tentang
                     </a>
                     <a href="{{ route('home') }}#berita" 
                        @click="activeSection = 'berita'; mobileMenuOpen = false"

@@ -15,6 +15,9 @@ Route::get('/news/{news:slug}', [HomeController::class, 'showNews'])->name('news
 // Facility detail route
 Route::get('/facility/{facility:slug}', [HomeController::class, 'showFacility'])->name('facility.show');
 
+// About page
+Route::get('/tentang', [HomeController::class, 'about'])->name('about');
+
 // Registration routes
 Route::prefix('registration')->name('registration.')->group(function () {
     Route::get('/create', [RegistrationController::class, 'create'])->name('create');
