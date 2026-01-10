@@ -114,6 +114,23 @@ class SettingResource extends Resource
                     ])
                     ->columns(1),
 
+                Section::make('Konten Halaman - Section Keunggulan')
+                    ->schema([
+                        TextInput::make('why_choose_us_title')
+                            ->label('Judul Section Keunggulan')
+                            ->maxLength(255)
+                            ->default(fn () => Setting::get('why_choose_us_title', 'Mengapa Memilih Kami?'))
+                            ->helperText('Judul yang ditampilkan di section keunggulan'),
+                        
+                        Textarea::make('why_choose_us_description')
+                            ->label('Deskripsi Section Keunggulan')
+                            ->rows(2)
+                            ->maxLength(500)
+                            ->default(fn () => Setting::get('why_choose_us_description', 'Komitmen kami untuk memberikan pendidikan berkualitas tinggi dengan fasilitas modern'))
+                            ->helperText('Deskripsi singkat di bawah judul section keunggulan'),
+                    ])
+                    ->columns(1),
+
                 Section::make('Konten Halaman - Section Fasilitas')
                     ->schema([
                         TextInput::make('facilities_section_title')

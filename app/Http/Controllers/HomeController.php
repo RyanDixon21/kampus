@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\Facility;
 use App\Models\Tendik;
 use App\Models\HeroCard;
+use App\Models\WhyChooseUs;
 
 class HomeController extends Controller
 {
@@ -38,7 +39,12 @@ class HomeController extends Controller
         // Load active hero cards
         $heroCards = HeroCard::active()->ordered()->get();
         
-        return view('home', compact('settings', 'latestNews', 'facilities', 'tendik', 'heroCards'));
+        // Load why choose us items
+        $whyChooseUs = WhyChooseUs::where('is_active', true)
+            ->orderBy('order')
+            ->get();
+        
+        return view('home', compact('settings', 'latestNews', 'facilities', 'tendik', 'heroCards', 'whyChooseUs'));
     }
 
     /**

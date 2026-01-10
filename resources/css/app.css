@@ -47,6 +47,59 @@ body {
     }
 }
 
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .animate-fade-in {
     animation: fadeIn 0.8s ease-out forwards;
     opacity: 0;
@@ -60,6 +113,25 @@ body {
 .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
     opacity: 0;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
 }
 
 /* Scroll-triggered animations */
@@ -127,6 +199,36 @@ body {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Card hover glow effect */
+.card-glow {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.card-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(10px);
+}
+
+.card-glow:hover::before {
+    opacity: 0.5;
+}
+
 /* Lazy loading image styles */
 img[loading="lazy"] {
     transition: opacity 0.3s ease-in-out;
@@ -192,4 +294,20 @@ img[loading="lazy"]:not([src]) {
 
 .animation-delay-4000 {
     animation-delay: 4s;
+}
+
+/* Parallax effect */
+.parallax {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, select, textarea {
+    transition: all 0.3s ease;
+}
+
+/* Alpine.js cloak */
+[x-cloak] {
+    display: none !important;
 }
