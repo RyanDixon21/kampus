@@ -28,15 +28,32 @@ class ManageAbout extends Page implements HasForms
 
     public function mount(): void
     {
+        $nilai = About::bySection('nilai')->ordered()->get();
+        $akreditasi = About::bySection('akreditasi')->ordered()->get();
+        
         $this->form->fill([
-            'tentang_title' => About::bySection('tentang')->first()?->title ?? 'Tentang Kami',
-            'tentang_content' => About::bySection('tentang')->first()?->content ?? '',
-            'visi_title' => About::bySection('visi')->first()?->title ?? 'Visi',
-            'visi_content' => About::bySection('visi')->first()?->content ?? '',
-            'misi_title' => About::bySection('misi')->first()?->title ?? 'Misi',
-            'misi_content' => About::bySection('misi')->first()?->content ?? '',
-            'sejarah_title' => About::bySection('sejarah')->first()?->title ?? 'Sejarah',
+            'sejarah_title' => About::bySection('sejarah')->first()?->title ?? 'Sejarah Kami',
             'sejarah_content' => About::bySection('sejarah')->first()?->content ?? '',
+            'visi_content' => About::bySection('visi')->first()?->content ?? '',
+            'misi_content' => About::bySection('misi')->first()?->content ?? '',
+            'nilai_title' => About::bySection('nilai_header')->first()?->title ?? 'Nilai-Nilai Kami',
+            'nilai_description' => About::bySection('nilai_header')->first()?->content ?? 'Prinsip yang menjadi landasan dalam setiap kegiatan kami',
+            'nilai_items' => $nilai->map(fn($item) => [
+                'icon' => $item->icon ?? ($item->order == 1 ? 'shield' : ($item->order == 2 ? 'lightbulb' : ($item->order == 3 ? 'star' : 'users'))),
+                'title' => $item->title,
+                'content' => $item->content,
+            ])->toArray(),
+            'akreditasi_title' => About::bySection('akreditasi_header')->first()?->title ?? 'Akreditasi & Penghargaan',
+            'akreditasi_description' => About::bySection('akreditasi_header')->first()?->content ?? 'Pengakuan atas komitmen kami terhadap kualitas pendidikan',
+            'akreditasi_items' => $akreditasi->map(fn($item) => [
+                'icon' => $item->icon ?? ($item->order == 1 ? 'badge' : ($item->order == 2 ? 'shield' : 'sparkles')),
+                'title' => $item->title,
+                'content' => $item->content,
+            ])->toArray(),
+            'cta_title' => About::bySection('cta')->first()?->title ?? 'Siap Bergabung Bersama Kami?',
+            'cta_description' => About::bySection('cta')->first()?->content ?? 'Wujudkan impian Anda untuk menjadi profesional di bidang teknologi',
+            'cta_button_text' => About::bySection('cta_button')->first()?->title ?? 'Daftar Sekarang',
+            'cta_button_link' => About::bySection('cta_button')->first()?->content ?? route('registration.create'),
         ]);
     }
 
@@ -51,46 +68,104 @@ class ManageAbout extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        // Update or create Tentang
+        // Update or create Sejarah
         About::updateOrCreate(
-            ['section' => 'tentang'],
+            ['section' => 'sejarah', 'order' => 1],
             [
-                'title' => $data['tentang_title'],
-                'content' => $data['tentang_content'],
-                'order' => 1,
+                'title' => $data['sejarah_title'],
+                'content' => $data['sejarah_content'],
                 'is_active' => true,
             ]
         );
 
         // Update or create Visi
         About::updateOrCreate(
-            ['section' => 'visi'],
+            ['section' => 'visi', 'order' => 1],
             [
-                'title' => $data['visi_title'],
+                'title' => 'Visi',
                 'content' => $data['visi_content'],
-                'order' => 2,
                 'is_active' => true,
             ]
         );
 
         // Update or create Misi
         About::updateOrCreate(
-            ['section' => 'misi'],
+            ['section' => 'misi', 'order' => 1],
             [
-                'title' => $data['misi_title'],
+                'title' => 'Misi',
                 'content' => $data['misi_content'],
-                'order' => 3,
                 'is_active' => true,
             ]
         );
 
-        // Update or create Sejarah
+        // Update or create Nilai Header
         About::updateOrCreate(
-            ['section' => 'sejarah'],
+            ['section' => 'nilai_header', 'order' => 1],
             [
-                'title' => $data['sejarah_title'],
-                'content' => $data['sejarah_content'],
-                'order' => 4,
+                'title' => $data['nilai_title'],
+                'content' => $data['nilai_description'],
+                'is_active' => true,
+            ]
+        );
+
+        // Delete existing nilai and create new ones
+        About::where('section', 'nilai')->delete();
+        
+        if (isset($data['nilai_items']) && is_array($data['nilai_items'])) {
+            foreach ($data['nilai_items'] as $index => $nilai) {
+                About::create([
+                    'section' => 'nilai',
+                    'title' => $nilai['title'],
+                    'content' => $nilai['content'],
+                    'icon' => $nilai['icon'] ?? null,
+                    'order' => $index + 1,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
+        // Update or create Akreditasi Header
+        About::updateOrCreate(
+            ['section' => 'akreditasi_header', 'order' => 1],
+            [
+                'title' => $data['akreditasi_title'],
+                'content' => $data['akreditasi_description'],
+                'is_active' => true,
+            ]
+        );
+
+        // Delete existing akreditasi and create new ones
+        About::where('section', 'akreditasi')->delete();
+        
+        if (isset($data['akreditasi_items']) && is_array($data['akreditasi_items'])) {
+            foreach ($data['akreditasi_items'] as $index => $akreditasi) {
+                About::create([
+                    'section' => 'akreditasi',
+                    'title' => $akreditasi['title'],
+                    'content' => $akreditasi['content'],
+                    'icon' => $akreditasi['icon'] ?? null,
+                    'order' => $index + 1,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
+        // Update or create CTA
+        About::updateOrCreate(
+            ['section' => 'cta', 'order' => 1],
+            [
+                'title' => $data['cta_title'],
+                'content' => $data['cta_description'],
+                'is_active' => true,
+            ]
+        );
+
+        // Update or create CTA Button
+        About::updateOrCreate(
+            ['section' => 'cta_button', 'order' => 1],
+            [
+                'title' => $data['cta_button_text'],
+                'content' => $data['cta_button_link'],
                 'is_active' => true,
             ]
         );

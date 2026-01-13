@@ -120,11 +120,25 @@ class HomeController extends Controller
         $settings = Setting::getSettings();
         
         // Load about content grouped by section
-        $tentang = About::active()->bySection('tentang')->ordered()->get();
+        $sejarah = About::active()->bySection('sejarah')->ordered()->get();
         $visi = About::active()->bySection('visi')->ordered()->get();
         $misi = About::active()->bySection('misi')->ordered()->get();
-        $sejarah = About::active()->bySection('sejarah')->ordered()->get();
+        $nilaiNilai = About::active()->bySection('nilai')->ordered()->get();
+        
+        // Load nilai header
+        $nilaiHeader = About::active()->bySection('nilai_header')->first();
+        
+        // Load akreditasi header and items
+        $akreditasiHeader = About::active()->bySection('akreditasi_header')->first();
+        $akreditasiItems = About::active()->bySection('akreditasi')->ordered()->get();
+        
+        // Load CTA data
+        $cta = About::active()->bySection('cta')->first();
+        $ctaButton = About::active()->bySection('cta_button')->first();
+        
+        // Load akreditasi (for backward compatibility)
+        $accreditation = About::active()->bySection('akreditasi')->first()?->content ?? 'B';
 
-        return view('about', compact('settings', 'tentang', 'visi', 'misi', 'sejarah'));
+        return view('about', compact('settings', 'sejarah', 'visi', 'misi', 'nilaiNilai', 'nilaiHeader', 'akreditasiHeader', 'akreditasiItems', 'cta', 'ctaButton', 'accreditation'));
     }
 }

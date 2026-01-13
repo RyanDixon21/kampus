@@ -36,8 +36,10 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName($universityShortName)
             ->brandLogo($logoUrl)
-            ->brandLogoHeight('3rem')
+            ->brandLogoHeight('2.5rem')
+            ->sidebarCollapsibleOnDesktop()
             ->favicon($logoUrl)
+            ->globalSearch(false)
             ->colors([
                 'primary' => Color::Sky,
             ])

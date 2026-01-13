@@ -10,7 +10,11 @@
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-8">
+            @if($sejarah->count() > 0 && $sejarah->first()->title)
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{{ $sejarah->first()->title }}</h2>
+            @else
             <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Sejarah Kami</h2>
+            @endif
             <div class="w-24 h-1 bg-blue-600 mx-auto"></div>
         </div>
         
@@ -36,19 +40,16 @@
                 @if($sejarah->count() > 0)
                     @foreach($sejarah as $item)
                     <div class="mb-6">
-                        @if($item->title)
-                        <h3 class="text-3xl font-bold text-gray-900 mb-4 text-justify">{{ $item->title }}</h3>
-                        @endif
-                        <div class="text-gray-700 text-lg leading-relaxed text-justify">
+                        <div class="text-gray-700 text-lg leading-relaxed text-justify" style="word-break: break-word; overflow-wrap: break-word;">
                             {!! nl2br(e($item->content)) !!}
                         </div>
                     </div>
                     @endforeach
                 @else
-                <p class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
+                <p class="text-gray-700 text-lg leading-relaxed mb-6 text-justify" style="word-break: break-word;">
                     {{ $settings['history'] ?? 'Sekolah Tinggi Teknologi Pratama Adi didirikan dengan visi untuk menjadi institusi pendidikan tinggi yang unggul dalam bidang teknologi. Sejak awal berdirinya, kami berkomitmen untuk menghasilkan lulusan yang tidak hanya kompeten secara teknis, tetapi juga memiliki karakter yang kuat dan siap menghadapi tantangan di era digital.' }}
                 </p>
-                <p class="text-gray-700 text-lg leading-relaxed text-justify">
+                <p class="text-gray-700 text-lg leading-relaxed text-justify" style="word-break: break-word;">
                     Dengan dukungan tenaga pengajar yang berpengalaman dan fasilitas yang modern, kami terus berinovasi dalam metode pembelajaran untuk memastikan mahasiswa mendapatkan pendidikan terbaik yang relevan dengan kebutuhan industri.
                 </p>
                 @endif
@@ -73,19 +74,12 @@
                     <h2 class="text-3xl font-bold text-gray-900">Visi</h2>
                 </div>
                 <div class="flex-grow">
-                    @if($visi->count() > 0)
-                        @foreach($visi as $item)
-                        <div class="mb-4">
-                            @if($item->title)
-                            <h3 class="text-xl font-bold text-gray-900 mb-2 text-justify">{{ $item->title }}</h3>
-                            @endif
-                            <div class="text-gray-700 text-lg leading-relaxed text-justify">
-                                {!! nl2br(e($item->content)) !!}
-                            </div>
-                        </div>
-                        @endforeach
+                    @if($visi->count() > 0 && $visi->first()->content)
+                    <div class="text-gray-700 text-lg leading-relaxed text-justify" style="word-break: break-word;">
+                        {!! nl2br(e($visi->first()->content)) !!}
+                    </div>
                     @else
-                    <p class="text-gray-700 text-lg leading-relaxed text-justify">
+                    <p class="text-gray-700 text-lg leading-relaxed text-justify" style="word-break: break-word;">
                         {{ $settings['vision'] ?? 'Menjadi institusi pendidikan tinggi teknologi yang unggul, inovatif, dan berdaya saing global dalam menghasilkan lulusan yang profesional dan berakhlak mulia.' }}
                     </p>
                     @endif
@@ -105,12 +99,16 @@
                 <div class="flex-grow">
                     @if($misi->count() > 0)
                     <ul class="space-y-3 text-gray-700 text-lg">
-                        @foreach($misi as $item)
+                        @php
+                            $misiContent = $misi->first()->content;
+                            $misiList = array_filter(explode("\n", $misiContent));
+                        @endphp
+                        @foreach($misiList as $item)
                         <li class="flex items-start">
                             <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-justify">{{ $item->content }}</span>
+                            <span class="text-justify">{{ trim($item) }}</span>
                         </li>
                         @endforeach
                     </ul>
@@ -166,14 +164,50 @@
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Nilai-Nilai Kami</h2>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                {{ $nilaiHeader->title ?? 'Nilai-Nilai Kami' }}
+            </h2>
             <p class="text-blue-100 text-lg max-w-2xl mx-auto">
-                Prinsip yang menjadi landasan dalam setiap kegiatan kami
+                {{ $nilaiHeader->content ?? 'Prinsip yang menjadi landasan dalam setiap kegiatan kami' }}
             </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Integritas -->
+            @if($nilaiNilai->count() > 0)
+                @foreach($nilaiNilai as $index => $nilai)
+                @php
+                    // Get icon from database or fallback to order-based icon
+                    $iconName = $nilai->icon ?? match($nilai->order) {
+                        1 => 'shield',
+                        2 => 'lightbulb',
+                        3 => 'star',
+                        default => 'users',
+                    };
+                    
+                    // Map icon name to SVG path
+                    $iconPath = match($iconName) {
+                        'shield' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+                        'lightbulb' => 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+                        'star' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+                        'users' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
+                        'heart' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+                        'rocket' => 'M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122',
+                        'trophy' => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+                        default => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
+                    };
+                @endphp
+                <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $iconPath }}"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $nilai->title }}</h3>
+                    <p class="text-gray-600 text-justify">{{ $nilai->content }}</p>
+                </div>
+                @endforeach
+            @else
+            <!-- Default values if no data -->
             <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,8 +217,6 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Integritas</h3>
                 <p class="text-gray-600">Menjunjung tinggi kejujuran dan etika dalam setiap tindakan</p>
             </div>
-
-            <!-- Inovasi -->
             <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,8 +226,6 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Inovasi</h3>
                 <p class="text-gray-600">Mendorong kreativitas dan pemikiran yang out of the box</p>
             </div>
-
-            <!-- Keunggulan -->
             <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,8 +235,6 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Keunggulan</h3>
                 <p class="text-gray-600">Berkomitmen untuk selalu memberikan yang terbaik</p>
             </div>
-
-            <!-- Kolaborasi -->
             <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -216,9 +244,11 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Kolaborasi</h3>
                 <p class="text-gray-600">Membangun kerjasama yang saling menguntungkan</p>
             </div>
+            @endif
         </div>
     </div>
 </section>
+
 <!-- Akreditasi & Penghargaan Section -->
 <section class="py-20 bg-gray-50 relative overflow-hidden">
     <!-- Dot Pattern -->
@@ -228,14 +258,49 @@
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Akreditasi & Penghargaan</h2>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+                {{ $akreditasiHeader->title ?? 'Akreditasi & Penghargaan' }}
+            </h2>
             <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                Pengakuan atas komitmen kami terhadap kualitas pendidikan
+                {{ $akreditasiHeader->content ?? 'Pengakuan atas komitmen kami terhadap kualitas pendidikan' }}
             </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Akreditasi -->
+            @if($akreditasiItems->count() > 0)
+                @foreach($akreditasiItems as $index => $akreditasi)
+                @php
+                    // Get icon from database or fallback to order-based icon
+                    $iconName = $akreditasi->icon ?? match($akreditasi->order) {
+                        1 => 'badge',
+                        2 => 'shield',
+                        default => 'sparkles',
+                    };
+                    
+                    // Map icon name to SVG path
+                    $iconPath = match($iconName) {
+                        'badge' => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+                        'shield' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+                        'sparkles' => 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',
+                        'award' => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+                        'check-circle' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                        'academic-cap' => 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222',
+                        'star-badge' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+                        default => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+                    };
+                @endphp
+                <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
+                    <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $iconPath }}"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $akreditasi->title }}</h3>
+                    <p class="text-gray-600 text-justify">{{ $akreditasi->content }}</p>
+                </div>
+                @endforeach
+            @else
+            <!-- Default values if no data -->
             <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
                 <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,10 +308,8 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Akreditasi BAN-PT</h3>
-                <p class="text-gray-600">Terakreditasi dengan peringkat {{ $settings['accreditation'] ?? 'B' }}</p>
+                <p class="text-gray-600">Terakreditasi dengan peringkat {{ $accreditation }}</p>
             </div>
-
-            <!-- ISO -->
             <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
                 <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,8 +319,6 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Sertifikasi ISO</h3>
                 <p class="text-gray-600">Sistem manajemen mutu terjamin</p>
             </div>
-
-            <!-- Penghargaan -->
             <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
                 <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -267,6 +328,7 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Penghargaan</h3>
                 <p class="text-gray-600">Berbagai prestasi di tingkat nasional</p>
             </div>
+            @endif
         </div>
     </div>
 </section>
@@ -280,14 +342,14 @@
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
-            Siap Bergabung Bersama Kami?
+            {{ $cta->title ?? 'Siap Bergabung Bersama Kami?' }}
         </h2>
         <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Wujudkan impian Anda untuk menjadi profesional di bidang teknologi
+            {{ $cta->content ?? 'Wujudkan impian Anda untuk menjadi profesional di bidang teknologi' }}
         </p>
-        <a href="{{ route('registration.create') }}" 
+        <a href="{{ $ctaButton->content ?? route('registration.create') }}" 
            class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg hover:scale-105">
-            Daftar Sekarang
+            {{ $ctaButton->title ?? 'Daftar Sekarang' }}
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
             </svg>

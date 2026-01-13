@@ -10,6 +10,7 @@ class About extends Model
         'section',
         'title',
         'content',
+        'icon',
         'order',
         'is_active',
     ];
