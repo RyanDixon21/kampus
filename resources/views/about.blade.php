@@ -1,136 +1,298 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Section -->
-<section class="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 py-20">
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 50px 50px;"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="animate-fade-in-down">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
-                Tentang Kami
-            </h1>
-            <p class="text-xl text-blue-200 max-w-2xl mx-auto">
-                {{ $settings['university_name'] ?? 'STT Pratama Adi' }}
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- Tentang Kami Section -->
-@if($tentang->count() > 0)
-<section class="relative py-16 bg-white overflow-hidden">
-    <div class="absolute inset-0 opacity-5">
-        <div class="absolute inset-0" style="background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px); background-size: 30px 30px;"></div>
-    </div>
-    
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        @foreach($tentang as $item)
-        <div class="mb-12 animate-fade-in">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">{{ $item->title }}</h2>
-            <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed">
-                {!! $item->content !!}
-            </div>
-        </div>
-        @endforeach
-    </div>
-</section>
-@endif
-
-<!-- Visi Section -->
-@if($visi->count() > 0)
-<section class="relative py-16 bg-gray-50 overflow-hidden">
+<!-- Sejarah Section -->
+<section class="py-16 bg-white relative overflow-hidden">
+    <!-- Subtle Grid Pattern -->
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 50px 50px;"></div>
     </div>
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        @foreach($visi as $item)
-        <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border-t-4 border-blue-500 animate-fade-in-up">
-            <div class="flex items-center mb-6">
-                <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
+        <div class="text-center mb-8">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Sejarah Kami</h2>
+            <div class="w-24 h-1 bg-blue-600 mx-auto"></div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8 md:p-12">
+            @php
+                $logo = $settings['logo'] ?? null;
+                $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
+                $universityName = $settings['university_name'] ?? 'Sekolah Tinggi Teknologi Pratama Adi';
+            @endphp
+            
+            <!-- Logo Center -->
+            <div class="flex justify-center mb-10">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-blue-600 rounded-full blur-3xl opacity-20"></div>
+                    <img src="{{ $logoUrl }}" 
+                         alt="{{ $universityName }} Logo" 
+                         class="relative h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                         onerror="this.style.display='none';">
                 </div>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">{{ $item->title }}</h2>
             </div>
-            <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed">
-                {!! $item->content !!}
+            
+            <div class="prose prose-xl max-w-none">
+                @if($sejarah->count() > 0)
+                    @foreach($sejarah as $item)
+                    <div class="mb-6">
+                        @if($item->title)
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4 text-justify">{{ $item->title }}</h3>
+                        @endif
+                        <div class="text-gray-700 text-lg leading-relaxed text-justify">
+                            {!! nl2br(e($item->content)) !!}
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                <p class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
+                    {{ $settings['history'] ?? 'Sekolah Tinggi Teknologi Pratama Adi didirikan dengan visi untuk menjadi institusi pendidikan tinggi yang unggul dalam bidang teknologi. Sejak awal berdirinya, kami berkomitmen untuk menghasilkan lulusan yang tidak hanya kompeten secara teknis, tetapi juga memiliki karakter yang kuat dan siap menghadapi tantangan di era digital.' }}
+                </p>
+                <p class="text-gray-700 text-lg leading-relaxed text-justify">
+                    Dengan dukungan tenaga pengajar yang berpengalaman dan fasilitas yang modern, kami terus berinovasi dalam metode pembelajaran untuk memastikan mahasiswa mendapatkan pendidikan terbaik yang relevan dengan kebutuhan industri.
+                </p>
+                @endif
             </div>
         </div>
-        @endforeach
     </div>
 </section>
-@endif
 
-<!-- Misi Section -->
-@if($misi->count() > 0)
-<section class="relative py-16 bg-white overflow-hidden">
+<!-- Visi Misi Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Visi -->
+            <div class="bg-white rounded-2xl p-8 border-t-4 border-blue-600 shadow-lg flex flex-col h-full">
+                <div class="mb-6 text-center">
+                    <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Visi</h2>
+                </div>
+                <div class="flex-grow">
+                    @if($visi->count() > 0)
+                        @foreach($visi as $item)
+                        <div class="mb-4">
+                            @if($item->title)
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 text-justify">{{ $item->title }}</h3>
+                            @endif
+                            <div class="text-gray-700 text-lg leading-relaxed text-justify">
+                                {!! nl2br(e($item->content)) !!}
+                            </div>
+                        </div>
+                        @endforeach
+                    @else
+                    <p class="text-gray-700 text-lg leading-relaxed text-justify">
+                        {{ $settings['vision'] ?? 'Menjadi institusi pendidikan tinggi teknologi yang unggul, inovatif, dan berdaya saing global dalam menghasilkan lulusan yang profesional dan berakhlak mulia.' }}
+                    </p>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Misi -->
+            <div class="bg-white rounded-2xl p-8 border-t-4 border-blue-600 shadow-lg flex flex-col h-full">
+                <div class="mb-6 text-center">
+                    <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Misi</h2>
+                </div>
+                <div class="flex-grow">
+                    @if($misi->count() > 0)
+                    <ul class="space-y-3 text-gray-700 text-lg">
+                        @foreach($misi as $item)
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-justify">{{ $item->content }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <ul class="space-y-3 text-gray-700 text-lg">
+                        @php
+                            $missions = $settings['mission'] ?? [
+                                'Menyelenggarakan pendidikan tinggi teknologi yang berkualitas',
+                                'Mengembangkan penelitian dan pengabdian kepada masyarakat',
+                                'Membangun kerjasama dengan industri dan institusi lain',
+                                'Menciptakan lingkungan akademik yang kondusif'
+                            ];
+                            if(is_string($missions)) {
+                                $missions = explode("\n", $missions);
+                            }
+                        @endphp
+                        @foreach($missions as $mission)
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-justify">{{ trim($mission) }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nilai-Nilai Section -->
+<section class="py-20 bg-blue-600 relative overflow-hidden">
+    <!-- Tech Pattern Background -->
+    <div class="absolute inset-0 opacity-10">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="tech-pattern-nilai" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                    <!-- Circuit lines -->
+                    <path d="M0 50 L25 50 L25 25 L50 25 L50 50 L75 50 L75 75 L100 75" stroke="white" fill="none" stroke-width="1"/>
+                    <path d="M50 0 L50 25 M50 50 L50 75 M50 75 L50 100" stroke="white" fill="none" stroke-width="1"/>
+                    <!-- Dots -->
+                    <circle cx="25" cy="50" r="2" fill="white"/>
+                    <circle cx="50" cy="25" r="2" fill="white"/>
+                    <circle cx="75" cy="75" r="2" fill="white"/>
+                    <circle cx="50" cy="50" r="2" fill="white"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#tech-pattern-nilai)"/>
+        </svg>
+    </div>
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Nilai-Nilai Kami</h2>
+            <p class="text-blue-100 text-lg max-w-2xl mx-auto">
+                Prinsip yang menjadi landasan dalam setiap kegiatan kami
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Integritas -->
+            <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Integritas</h3>
+                <p class="text-gray-600">Menjunjung tinggi kejujuran dan etika dalam setiap tindakan</p>
+            </div>
+
+            <!-- Inovasi -->
+            <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Inovasi</h3>
+                <p class="text-gray-600">Mendorong kreativitas dan pemikiran yang out of the box</p>
+            </div>
+
+            <!-- Keunggulan -->
+            <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Keunggulan</h3>
+                <p class="text-gray-600">Berkomitmen untuk selalu memberikan yang terbaik</p>
+            </div>
+
+            <!-- Kolaborasi -->
+            <div class="text-center group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Kolaborasi</h3>
+                <p class="text-gray-600">Membangun kerjasama yang saling menguntungkan</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Akreditasi & Penghargaan Section -->
+<section class="py-20 bg-gray-50 relative overflow-hidden">
+    <!-- Dot Pattern -->
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px); background-size: 30px 30px;"></div>
     </div>
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        @foreach($misi as $item)
-        <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl shadow-2xl p-8 md:p-12 border-t-4 border-green-500 animate-fade-in-up">
-            <div class="flex items-center mb-6">
-                <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Akreditasi & Penghargaan</h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Pengakuan atas komitmen kami terhadap kualitas pendidikan
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Akreditasi -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                     </svg>
                 </div>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">{{ $item->title }}</h2>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Akreditasi BAN-PT</h3>
+                <p class="text-gray-600">Terakreditasi dengan peringkat {{ $settings['accreditation'] ?? 'B' }}</p>
             </div>
-            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                {!! $item->content !!}
+
+            <!-- ISO -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Sertifikasi ISO</h3>
+                <p class="text-gray-600">Sistem manajemen mutu terjamin</p>
+            </div>
+
+            <!-- Penghargaan -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg text-center border-t-4 border-blue-600">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Penghargaan</h3>
+                <p class="text-gray-600">Berbagai prestasi di tingkat nasional</p>
             </div>
         </div>
-        @endforeach
     </div>
 </section>
-@endif
 
-<!-- Sejarah Section -->
-@if($sejarah->count() > 0)
-<section class="relative py-16 bg-gray-50 overflow-hidden">
+<!-- CTA Section -->
+<section class="py-20 bg-white relative overflow-hidden">
+    <!-- Grid Pattern -->
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 50px 50px;"></div>
     </div>
     
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        @foreach($sejarah as $item)
-        <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border-t-4 border-purple-500 animate-fade-in-up">
-            <div class="flex items-center mb-6">
-                <div class="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">{{ $item->title }}</h2>
-            </div>
-            <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed">
-                {!! $item->content !!}
-            </div>
-        </div>
-        @endforeach
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            Siap Bergabung Bersama Kami?
+        </h2>
+        <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Wujudkan impian Anda untuk menjadi profesional di bidang teknologi
+        </p>
+        <a href="{{ route('registration.create') }}" 
+           class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg hover:scale-105">
+            Daftar Sekarang
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+        </a>
     </div>
 </section>
-@endif
 
-<!-- Empty State -->
-@if($tentang->count() == 0 && $visi->count() == 0 && $misi->count() == 0 && $sejarah->count() == 0)
-<section class="relative py-24 bg-gray-50">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <svg class="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <h3 class="text-2xl font-bold text-gray-900 mb-2">Konten Belum Tersedia</h3>
-        <p class="text-gray-600">Informasi tentang kami akan segera ditambahkan.</p>
-    </div>
-</section>
-@endif
 @endsection

@@ -70,12 +70,11 @@
                 <div class="hidden md:flex space-x-1 items-center">
                     <a href="{{ route('home') }}" 
                        @click="activeSection = 'beranda'"
-                       class="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium relative"
-                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'beranda' }">
+                       class="px-4 py-2 rounded-lg hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium relative {{ request()->routeIs('home') ? 'text-blue-500 bg-blue-50' : 'text-gray-700' }}">
                         Beranda
                     </a>
                     <a href="{{ route('about') }}" 
-                       class="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium">
+                       class="px-4 py-2 rounded-lg hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium {{ request()->routeIs('about') ? 'text-blue-500 bg-blue-50' : 'text-gray-700' }}">
                         Tentang
                     </a>
                     <a href="{{ route('home') }}#berita" 
@@ -185,13 +184,12 @@
                 <div class="flex flex-col space-y-1 p-4">
                     <a href="{{ route('home') }}" 
                        @click="activeSection = 'beranda'; mobileMenuOpen = false"
-                       class="text-gray-700 hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium"
-                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'beranda' }">
+                       class="hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium {{ request()->routeIs('home') ? 'text-blue-500 bg-blue-50' : 'text-gray-700' }}">
                         Beranda
                     </a>
                     <a href="{{ route('about') }}" 
                        @click="mobileMenuOpen = false"
-                       class="text-gray-700 hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium">
+                       class="hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium {{ request()->routeIs('about') ? 'text-blue-500 bg-blue-50' : 'text-gray-700' }}">
                         Tentang
                     </a>
                     <a href="{{ route('home') }}#berita" 
