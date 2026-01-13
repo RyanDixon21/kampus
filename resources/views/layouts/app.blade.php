@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'STT Pratama Adi' }}</title>
+    @php
+        $logo = $settings['logo'] ?? null;
+        $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
+        $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
+    @endphp
+    <title>{{ $title ?? $universityShortName }}</title>
+    <link rel="icon" type="image/png" href="{{ $logoUrl }}">
     
     <!-- Vite CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

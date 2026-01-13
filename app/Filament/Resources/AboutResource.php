@@ -19,7 +19,7 @@ class AboutResource extends Resource
 
     protected static ?string $navigationLabel = 'Tentang';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

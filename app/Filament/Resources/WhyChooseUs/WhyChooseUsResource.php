@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class WhyChooseUsResource extends Resource
 {
@@ -26,7 +27,9 @@ class WhyChooseUsResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Keunggulan';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 15;
+
+    protected static UnitEnum|string|null $navigationGroup = 'Konten';
 
     public static function form(Schema $schema): Schema
     {

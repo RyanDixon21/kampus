@@ -19,6 +19,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class HeroCardResource extends Resource
 {
@@ -32,7 +33,9 @@ class HeroCardResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Hero Slides';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 11;
+
+    protected static UnitEnum|string|null $navigationGroup = 'Konten';
 
     protected static ?string $recordTitleAttribute = 'title';
 

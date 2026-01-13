@@ -18,6 +18,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class FacilityResource extends Resource
 {
@@ -31,7 +32,9 @@ class FacilityResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Fasilitas';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 13;
+
+    protected static UnitEnum|string|null $navigationGroup = 'Konten';
 
     public static function form(Schema $schema): Schema
     {

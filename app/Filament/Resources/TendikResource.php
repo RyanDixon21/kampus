@@ -16,6 +16,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class TendikResource extends Resource
 {
@@ -29,7 +30,9 @@ class TendikResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Tendik';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 14;
+
+    protected static UnitEnum|string|null $navigationGroup = 'Konten';
 
     public static function form(Schema $schema): Schema
     {

@@ -32,7 +32,7 @@ class CbtQuestionResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Soal CBT';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
