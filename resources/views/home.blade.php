@@ -44,9 +44,9 @@
              x-transition:leave="transition ease-in duration-700"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="relative text-white overflow-hidden min-h-[60vh]"
-             style="display: none;"
-             :style="currentSlide === {{ $index }} ? 'display: flex;' : 'display: none;'">
+             class="relative text-white overflow-hidden"
+             style="display: none; height: 600px;"
+             :style="currentSlide === {{ $index }} ? 'display: flex; height: 600px;' : 'display: none; height: 600px;'">
             
             <!-- Background Layer -->
             <div class="absolute inset-0 z-0">
@@ -65,8 +65,8 @@
             </div>
             
             <!-- Content Container -->
-            <div class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-                <div class="text-center">
+            <div class="relative z-10 w-full h-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+                <div class="text-center w-full py-4">
                     
                     <!-- Logo (Optional) -->
                     @if($slide->show_logo)
@@ -77,18 +77,18 @@
                         @endphp
                         <img src="{{ $logoUrl }}" 
                              alt="Logo" 
-                             class="h-24 w-24 md:h-32 md:w-32 mx-auto drop-shadow-2xl"
+                             class="h-32 w-32 md:h-40 md:w-40 mx-auto drop-shadow-2xl"
                              onerror="this.style.display='none';">
                     </div>
                     @endif
                     
                     <!-- Title -->
                     <div class="mb-6 animate-fade-in" style="animation-delay: 0.1s;">
-                        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-3 line-clamp-2">
                             {{ $slide->title }}
                         </h1>
                         @if($slide->subtitle)
-                        <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-300">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300 line-clamp-2">
                             {{ $slide->subtitle }}
                         </h2>
                         @endif
@@ -96,7 +96,7 @@
                     
                     <!-- Description -->
                     @if($slide->description)
-                    <p class="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 animate-fade-in" style="animation-delay: 0.2s;">
+                    <p class="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-8 animate-fade-in line-clamp-3" style="animation-delay: 0.2s;">
                         {{ $slide->description }}
                     </p>
                     @endif
@@ -105,9 +105,9 @@
                     @if($slide->button_text && $slide->button_link)
                     <div class="animate-fade-in-up" style="animation-delay: 0.3s;">
                         <a href="{{ $slide->button_link }}" 
-                           class="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-2xl hover:scale-105">
+                           class="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 shadow-2xl hover:scale-105">
                             {{ $slide->button_text }}
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
                         </a>
@@ -147,7 +147,7 @@
     </div>
     @else
     <!-- Default Hero if no slides -->
-    <div class="relative text-white overflow-hidden min-h-[60vh]">
+    <div class="relative text-white overflow-hidden" style="height: 600px;">
         
         <!-- Background Layer -->
         <div class="absolute inset-0 z-0">
@@ -159,8 +159,8 @@
         </div>
         
         <!-- Content Container -->
-        <div class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-            <div class="text-center">
+        <div class="relative z-10 w-full h-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+            <div class="text-center w-full py-4">
                 
                 <!-- Logo -->
                 @if(($settings['show_hero_logo'] ?? true))
@@ -172,32 +172,32 @@
                     @endphp
                     <img src="{{ $logoUrl }}" 
                          alt="{{ $universityName }} Logo" 
-                         class="h-24 w-24 md:h-32 md:w-32 mx-auto drop-shadow-2xl"
+                         class="h-32 w-32 md:h-40 md:w-40 mx-auto drop-shadow-2xl"
                          onerror="this.style.display='none';">
                 </div>
                 @endif
                 
                 <!-- Title -->
                 <div class="mb-6 animate-fade-in" style="animation-delay: 0.1s;">
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-3">
                         Selamat Datang di
                     </h1>
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-300">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300">
                         {{ $settings['university_name'] ?? 'Sekolah Tinggi Teknologi Pratama Adi' }}
                     </h2>
                 </div>
                 
                 <!-- Description -->
-                <p class="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 animate-fade-in" style="animation-delay: 0.2s;">
+                <p class="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-8 animate-fade-in line-clamp-3" style="animation-delay: 0.2s;">
                     {{ $settings['hero_description'] ?? 'Sekolah Tinggi Teknologi Terdepan untuk Masa Depan Anda' }}
                 </p>
                 
                 <!-- CTA Button -->
                 <div class="animate-fade-in-up" style="animation-delay: 0.3s;">
                     <a href="{{ route('registration.create') }}" 
-                       class="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-2xl hover:scale-105">
+                       class="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 shadow-2xl hover:scale-105">
                         Daftar Sekarang
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </a>
