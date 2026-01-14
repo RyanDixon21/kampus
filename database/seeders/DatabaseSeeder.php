@@ -23,6 +23,14 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
         ]);
 
+        // Seed registration system data
+        $this->call([
+            RegistrationPathSeeder::class,
+            StudyProgramSeeder::class,
+            PaymentMethodSeeder::class,
+            VoucherSeeder::class,
+        ]);
+
         // Optionally seed sample data for testing
         // Uncomment the line below to seed sample data
         // $this->call([

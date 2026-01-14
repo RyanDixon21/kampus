@@ -16,21 +16,14 @@ class RegistrationController extends Controller
     
     /**
      * Show the registration form.
+     * Redirects to new multi-step registration system.
      * 
      * Requirements: 3.1, 3.2
      */
     public function create()
     {
-        // Check if registration is open
-        $registrationOpen = Setting::get('registration_open', true);
-        
-        // Get settings for logo
-        $settings = Setting::pluck('value', 'key')->toArray();
-        
-        return view('registration.create', [
-            'registrationOpen' => $registrationOpen,
-            'settings' => $settings
-        ]);
+        // Redirect to new multi-step registration system
+        return redirect()->route('registration.search');
     }
     
     /**

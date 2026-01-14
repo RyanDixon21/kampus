@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'registration.step' => \App\Http\Middleware\RegistrationStepMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

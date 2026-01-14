@@ -26,6 +26,42 @@ Route::prefix('registration')->name('registration.')->group(function () {
     Route::get('/{registration}/complete', [RegistrationController::class, 'complete'])->name('complete');
 });
 
+// New Multi-Step Registration routes (4-step flow)
+Route::prefix('pendaftaran')->name('registration.')->group(function () {
+    // Step 1: Search and select path (no middleware needed)
+    Route::get('/', [App\Http\Controllers\MultiStepRegistrationController::class, 'searchPaths'])->name('search');
+    Route::get('/jalur/{path:slug}', [App\Http\Controllers\MultiStepRegistrationController::class, 'showPathDetail'])->name('path.detail');
+    Route::post('/jalur/{path}/pilih', [App\Http\Controllers\MultiStepRegistrationController::class, 'selectPath'])->name('path.select');
+    
+    // Step 2: Registration form (requires path selection)
+    Route::middleware('registration.step:form')->group(function () {
+        Route::get('/formulir', [App\Http\Controllers\MultiStepRegistrationController::class, 'showForm'])->name('form');
+        Route::post('/formulir', [App\Http\Controllers\MultiStepRegistrationController::class, 'storeForm'])->name('form.store');
+        Route::get('/pindah-jalur', [App\Http\Controllers\MultiStepRegistrationController::class, 'changePath'])->name('change-path');
+        Route::get('/programs/{type}', [App\Http\Controllers\MultiStepRegistrationController::class, 'getProgramsByType'])->name('programs.by-type');
+    });
+    
+    // Step 3: Confirmation/Review (requires form completion)
+    Route::middleware('registration.step:confirmation')->group(function () {
+        Route::get('/konfirmasi', [App\Http\Controllers\MultiStepRegistrationController::class, 'showConfirmation'])->name('confirmation');
+        Route::get('/edit', [App\Http\Controllers\MultiStepRegistrationController::class, 'editForm'])->name('edit');
+        Route::post('/konfirmasi', [App\Http\Controllers\MultiStepRegistrationController::class, 'confirmData'])->name('confirm');
+    });
+    
+    // Step 4: Payment (requires data confirmation)
+    Route::middleware('registration.step:payment')->group(function () {
+        Route::get('/pembayaran', [App\Http\Controllers\MultiStepRegistrationController::class, 'showPayment'])->name('payment');
+        Route::post('/voucher', [App\Http\Controllers\MultiStepRegistrationController::class, 'applyVoucher'])->name('voucher.apply');
+        Route::post('/pembayaran', [App\Http\Controllers\MultiStepRegistrationController::class, 'processPayment'])->name('payment.process');
+    });
+    
+    // Success (no middleware - accessed after registration complete)
+    Route::get('/sukses/{registration}', [App\Http\Controllers\MultiStepRegistrationController::class, 'showSuccess'])->name('success');
+    
+    // Utilities
+    Route::get('/restart', [App\Http\Controllers\MultiStepRegistrationController::class, 'restart'])->name('restart');
+});
+
 // CBT routes
 Route::prefix('cbt')->name('cbt.')->group(function () {
     Route::get('/login', [CBTController::class, 'login'])->name('login');

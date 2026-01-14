@@ -3,9 +3,26 @@
 @section('content')
 <!-- Sejarah Section -->
 <section class="py-16 bg-white relative overflow-hidden">
-    <!-- Subtle Grid Pattern -->
+    <!-- Tech Pattern Background -->
     <div class="absolute inset-0 opacity-5">
-        <div class="absolute inset-0" style="background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 50px 50px;"></div>
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="tech-pattern" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+                    <!-- Circuit lines -->
+                    <path d="M0 60 L30 60 L30 30 L60 30 L60 60 L90 60 L90 90 L120 90" stroke="#3b82f6" fill="none" stroke-width="1.5"/>
+                    <path d="M60 0 L60 30 M60 60 L60 90 M60 90 L60 120" stroke="#3b82f6" fill="none" stroke-width="1.5"/>
+                    <!-- Dots/nodes -->
+                    <circle cx="30" cy="60" r="3" fill="#3b82f6"/>
+                    <circle cx="60" cy="30" r="3" fill="#3b82f6"/>
+                    <circle cx="90" cy="90" r="3" fill="#3b82f6"/>
+                    <circle cx="60" cy="60" r="4" fill="#3b82f6"/>
+                    <!-- Small circles -->
+                    <circle cx="15" cy="15" r="8" stroke="#3b82f6" fill="none" stroke-width="1"/>
+                    <circle cx="105" cy="105" r="8" stroke="#3b82f6" fill="none" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#tech-pattern)"/>
+        </svg>
     </div>
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
