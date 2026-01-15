@@ -119,15 +119,20 @@ class RegistrationPathSeeder extends Seeder
         ];
 
         foreach ($paths as $pathData) {
-            $path = RegistrationPath::create($pathData);
+            // Use updateOrCreate to avoid duplicate entry errors
+            $path = RegistrationPath::updateOrCreate(
+                ['slug' => $pathData['slug']], // Find by slug
+                $pathData // Update or create with this data
+            );
             
-            // Attach study programs based on degree level
+            // Sync study programs based on degree level
             $programs = StudyProgram::where('degree_level', $pathData['degree_level'])
                 ->where('is_active', true)
                 ->pluck('id');
             
             if ($programs->isNotEmpty()) {
-                $path->studyPrograms()->attach($programs);
+                // Use sync instead of attach to avoid duplicates
+                $path->studyPrograms()->sync($programs);
             }
         }
     }

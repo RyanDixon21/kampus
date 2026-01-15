@@ -142,7 +142,10 @@ class StudyProgramSeeder extends Seeder
         ];
 
         foreach ($programs as $program) {
-            StudyProgram::create($program);
+            StudyProgram::updateOrCreate(
+                ['code' => $program['code']], // Find by code
+                $program // Update or create with this data
+            );
         }
     }
 }
