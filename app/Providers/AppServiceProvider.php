@@ -12,6 +12,8 @@ use App\Observers\HeroCardObserver;
 use App\Observers\NewsObserver;
 use App\Observers\SettingObserver;
 use App\Observers\TendikObserver;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,5 +37,22 @@ class AppServiceProvider extends ServiceProvider
         HeroCard::observe(HeroCardObserver::class);
         Facility::observe(FacilityObserver::class);
         News::observe(NewsObserver::class);
+
+        // Share settings to all views
+        View::composer('*', function ($view) {
+            // Only load if settings table exists and settings not already set
+            if (!isset($view->getData()['settings'])) {
+                try {
+                    if (Schema::hasTable('settings')) {
+                        $settings = Setting::getSettings();
+                        $view->with('settings', $settings);
+                    } else {
+                        $view->with('settings', []);
+                    }
+                } catch (\Exception $e) {
+                    $view->with('settings', []);
+                }
+            }
+        });
     }
 }

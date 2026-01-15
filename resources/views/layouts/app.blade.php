@@ -120,7 +120,7 @@
                              class="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50"
                              style="display: none;">
                             <div class="py-2">
-                                <a href="{{ route('registration.create') }}" 
+                                <a href="{{ route('registration.search') }}" 
                                    class="flex items-center px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-500 transition-all duration-200 group">
                                     <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-3 group-hover:bg-blue-500 group-hover:scale-110 transition-all duration-200">
                                         <svg class="w-5 h-5 text-blue-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +230,7 @@
                              x-transition:enter-end="opacity-100 transform translate-y-0"
                              class="mt-2 space-y-1 bg-gray-50 rounded-lg p-2"
                              style="display: none;">
-                            <a href="{{ route('registration.create') }}" 
+                            <a href="{{ route('registration.search') }}" 
                                @click="mobileMenuOpen = false"
                                class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-white py-3 px-4 rounded-lg transition-all duration-200">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

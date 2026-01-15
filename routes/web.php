@@ -18,15 +18,15 @@ Route::get('/facility/{facility:slug}', [HomeController::class, 'showFacility'])
 // About page
 Route::get('/tentang', [HomeController::class, 'about'])->name('about');
 
-// Registration routes
-Route::prefix('registration')->name('registration.')->group(function () {
-    Route::get('/create', [RegistrationController::class, 'create'])->name('create');
-    Route::post('/store', [RegistrationController::class, 'store'])->name('store');
-    Route::get('/{registration}/payment', [RegistrationController::class, 'payment'])->name('payment');
-    Route::get('/{registration}/complete', [RegistrationController::class, 'complete'])->name('complete');
-});
+// Registration routes (Legacy - single step)
+// Route::prefix('registration')->name('registration.')->group(function () {
+//     Route::get('/create', [RegistrationController::class, 'create'])->name('create');
+//     Route::post('/store', [RegistrationController::class, 'store'])->name('store');
+//     Route::get('/{registration}/payment', [RegistrationController::class, 'payment'])->name('payment');
+//     Route::get('/{registration}/complete', [RegistrationController::class, 'complete'])->name('complete');
+// });
 
-// New Multi-Step Registration routes (4-step flow)
+// Multi-Step Registration routes (4-step flow) - Main registration flow
 Route::prefix('pendaftaran')->name('registration.')->group(function () {
     // Step 1: Search and select path (no middleware needed)
     Route::get('/', [App\Http\Controllers\MultiStepRegistrationController::class, 'searchPaths'])->name('search');

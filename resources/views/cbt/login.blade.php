@@ -104,7 +104,7 @@
                     <div class="text-center">
                         <p class="text-sm text-gray-600">
                             Belum mendaftar?
-                            <a href="{{ route('registration.create') }}" class="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200">
+                            <a href="{{ route('registration.search') }}" class="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200">
                                 Daftar sekarang
                             </a>
                         </p>

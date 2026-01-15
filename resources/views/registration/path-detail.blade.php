@@ -71,42 +71,47 @@
             </div>
             @endif
 
-            <!-- Requirements -->
-            @if($path->requirements && count($path->requirements) > 0)
-            <div class="bg-white rounded-xl shadow-sm border p-6">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Persyaratan Administrasi</h2>
-                <ul class="space-y-2">
-                    @foreach($path->requirements as $requirement)
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span class="text-gray-600">{{ $requirement }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <!-- Available Programs -->
-            @if($studyPrograms->count() > 0)
-            <div class="bg-white rounded-xl shadow-sm border p-6">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Program Studi Tersedia</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    @foreach($studyPrograms as $program)
-                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                            <svg class="w-5 h-5 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                            </svg>
-                            <div>
-                                <span class="font-medium text-gray-900">{{ $program->name }}</span>
-                                <span class="text-sm text-gray-500 ml-2">({{ $program->degree_level }})</span>
-                            </div>
-                        </div>
-                    @endforeach
+            <!-- Requirements & Programs - Side by Side -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Requirements -->
+                @if($path->requirements && count($path->requirements) > 0)
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Persyaratan Administrasi</h2>
+                    <ul class="space-y-2">
+                        @foreach($path->requirements as $key => $value)
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="text-gray-600">
+                                    {{ $key }}@if($value) <span class="text-gray-400">- {{ $value }}</span>@endif
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
+                @endif
+
+                <!-- Available Programs -->
+                @if($studyPrograms->count() > 0)
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Program Studi Tersedia</h2>
+                    <ul class="space-y-2">
+                        @foreach($studyPrograms as $program)
+                            <li class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <svg class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                <div>
+                                    <span class="font-medium text-gray-900">{{ $program->name }}</span>
+                                    <span class="text-sm text-gray-500 ml-1">({{ $program->degree_level }})</span>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
             </div>
-            @endif
 
             <!-- CTA -->
             <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-6">

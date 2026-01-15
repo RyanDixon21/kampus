@@ -194,7 +194,7 @@
                 
                 <!-- CTA Button -->
                 <div class="animate-fade-in-up" style="animation-delay: 0.3s;">
-                    <a href="{{ route('registration.create') }}" 
+                    <a href="{{ route('registration.search') }}" 
                        class="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 shadow-2xl hover:scale-105">
                         Daftar Sekarang
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

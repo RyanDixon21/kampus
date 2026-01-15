@@ -351,17 +351,29 @@ class MultiStepRegistrationController extends Controller
     /**
      * Step 4: Process payment and create registration
      */
-    public function processPayment(StorePaymentRequest $request): RedirectResponse
+    public function processPayment(Request $request)
     {
         $pathId = Session::get('registration.path_id');
         $formData = Session::get('registration.form_data');
         $dataConfirmed = Session::get('registration.data_confirmed');
         $voucherData = Session::get('registration.voucher', []);
 
+        // Check if AJAX request
+        $isAjax = $request->expectsJson();
+
         if (!$pathId || !$formData || !$dataConfirmed) {
+            if ($isAjax) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data pendaftaran tidak lengkap. Silakan mulai dari awal.'
+                ], 400);
+            }
             return redirect()->route('registration.search')
                 ->with('error', 'Data pendaftaran tidak lengkap');
         }
+
+        // Validate payment method
+        $paymentMethod = $request->input('payment_method', 'transfer_manual');
 
         try {
             $path = RegistrationPath::findOrFail($pathId);
@@ -377,8 +389,8 @@ class MultiStepRegistrationController extends Controller
                 'phone' => $formData['phone'],
                 'date_of_birth' => $formData['date_of_birth'],
                 'referral_code' => $formData['referral_code'] ?? null,
-                'voucher_code' => $voucherData['code'] ?? null,
-                'payment_method' => $request->payment_method,
+                'voucher_code' => $voucherData['code'] ?? $request->input('voucher_code'),
+                'payment_method' => $paymentMethod,
                 'registration_fee' => $path->registration_fee,
                 'data_confirmed_at' => Session::get('registration.data_confirmed_at'),
             ];
@@ -399,6 +411,17 @@ class MultiStepRegistrationController extends Controller
             // Clear session
             Session::forget('registration');
 
+            if ($isAjax) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pendaftaran berhasil disimpan!',
+                    'registration_number' => $registration->registration_number,
+                    'registration_id' => $registration->id,
+                    'name' => $registration->name,
+                    'final_amount' => $registration->final_amount,
+                ]);
+            }
+
             return redirect()
                 ->route('registration.success', ['registration' => $registration->id])
                 ->with('success', 'Pendaftaran berhasil!');
@@ -406,9 +429,17 @@ class MultiStepRegistrationController extends Controller
         } catch (\Exception $e) {
             Log::error('Registration failed', [
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
                 'path_id' => $pathId
             ]);
             
+            if ($isAjax) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat menyimpan pendaftaran: ' . $e->getMessage()
+                ], 500);
+            }
+
             return back()->with('error', 'Terjadi kesalahan saat menyimpan pendaftaran. Silakan coba lagi.');
         }
     }

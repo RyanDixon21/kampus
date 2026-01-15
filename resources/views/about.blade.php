@@ -364,7 +364,7 @@
         <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
             {{ $cta->content ?? 'Wujudkan impian Anda untuk menjadi profesional di bidang teknologi' }}
         </p>
-        <a href="{{ $ctaButton->content ?? route('registration.create') }}" 
+        <a href="{{ $ctaButton->content ?? route('registration.search') }}" 
            class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg hover:scale-105">
             {{ $ctaButton->title ?? 'Daftar Sekarang' }}
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
