@@ -45,7 +45,7 @@
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
              class="relative text-white overflow-hidden"
-             style="display: none; height: 600px;"
+             style="display: none; height: 550px;"
              :style="currentSlide === {{ $index }} ? 'display: flex; height: 600px;' : 'display: none; height: 600px;'">
             
             <!-- Background Layer -->
