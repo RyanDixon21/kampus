@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('panel')
             ->login()
             ->brandName($universityShortName)
             ->brandLogo($logoUrl)
