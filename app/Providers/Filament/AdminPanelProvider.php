@@ -16,6 +16,8 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -23,11 +25,32 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Get settings for branding
-        $settings = Setting::getSettings();
-        $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
-        $logo = $settings['logo'] ?? null;
-        $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
+        // Get settings for branding - with comprehensive error handling
+        $universityShortName = 'STT Pratama Adi';
+        $logoUrl = asset('logo.png');
+        
+        try {
+            // Only try to get settings if the table exists
+            if (\Schema::hasTable('settings')) {
+                $settings = Setting::getSettings();
+                $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
+                
+                // Handle logo with proper checks
+                if (isset($settings['logo']) && $settings['logo']) {
+                    try {
+                        if (Storage::disk('public')->exists($settings['logo'])) {
+                            $logoUrl = Storage::url($settings['logo']);
+                        }
+                    } catch (\Exception $e) {
+                        // Fallback to default logo if storage fails
+                        \Log::warning('Failed to load logo from storage: ' . $e->getMessage());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // Log error but don't break Filament
+            \Log::warning('Failed to load settings in Filament: ' . $e->getMessage());
+        }
 
         return $panel
             ->default()

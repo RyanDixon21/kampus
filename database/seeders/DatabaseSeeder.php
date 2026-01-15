@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         // Seed default settings
         $this->call([
-            SettingsSeeder::class,
+            SettingSeeder::class,
         ]);
 
         // Seed registration system data
