@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('panel')  // Changed from 'admin' to 'panel' to avoid Cloudflare WAF blocking
             ->login()
             ->brandName($universityShortName)
             ->brandLogo($logoUrl)
