@@ -38,7 +38,7 @@ class RegistrationController extends Controller
         
         if (!$registrationOpen) {
             return redirect()
-                ->route('registration.create')
+                ->route('registration.search')
                 ->with('error', 'Maaf, pendaftaran mahasiswa baru saat ini sedang ditutup.');
         }
         

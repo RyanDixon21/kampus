@@ -52,17 +52,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
+                <a href="{{ route('home') }}" class="flex items-center space-x-2 sm:space-x-3 group">
                     @php
                         $logo = $settings['logo'] ?? null;
                         $logoUrl = $logo ? Storage::url($logo) : asset('logo.png');
                         $universityShortName = $settings['university_short_name'] ?? 'STT Pratama Adi';
                         $universitySlogan = $settings['university_slogan'] ?? 'Sekolah Tinggi Teknologi';
                     @endphp
-                    <img src="{{ $logoUrl }}" alt="{{ $universityShortName }} Logo" class="h-14 w-14 object-contain transform group-hover:scale-110 transition-transform duration-300">
-                    <div class="hidden sm:block">
-                        <h1 class="text-xl font-bold text-gray-900 group-hover:text-blue-500 transition-colors">{{ $universityShortName }}</h1>
-                        <p class="text-xs text-gray-600">{{ $universitySlogan }}</p>
+                    <img src="{{ $logoUrl }}" alt="{{ $universityShortName }} Logo" class="h-12 w-12 sm:h-14 sm:w-14 object-contain transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <div class="min-w-0">
+                        <h1 class="text-sm sm:text-xl font-bold text-gray-900 group-hover:text-blue-500 transition-colors truncate">{{ $universityShortName }}</h1>
+                        <p class="text-xs text-gray-600 truncate">{{ $universitySlogan }}</p>
                     </div>
                 </a>
 

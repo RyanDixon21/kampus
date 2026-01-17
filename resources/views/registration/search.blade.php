@@ -22,10 +22,10 @@
 
             <!-- Filter Form -->
             <div class="bg-white rounded-xl shadow-sm border p-6">
-                <form method="GET" action="{{ route('registration.search') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <form id="searchForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Jenjang</label>
-                        <select name="degree_level" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        <select name="degree_level" id="degree_level" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Semua Jenjang</option>
                             @foreach($degreeLevels as $value => $label)
                                 <option value="{{ $value }}" {{ ($filters['degree_level'] ?? '') == $value ? 'selected' : '' }}>
@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Prodi</label>
-                        <select name="study_program_id" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        <select name="study_program_id" id="study_program_id" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Semua Program Studi</option>
                             @foreach($studyPrograms as $program)
                                 <option value="{{ $program->id }}" {{ ($filters['study_program_id'] ?? '') == $program->id ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Sistem Kuliah</label>
-                        <select name="system_type" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        <select name="system_type" id="system_type" class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Semua Sistem</option>
                             @foreach($systemTypes as $value => $label)
                                 <option value="{{ $value }}" {{ ($filters['system_type'] ?? '') == $value ? 'selected' : '' }}>
@@ -57,15 +57,19 @@
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                            Cari
+                        <button type="submit" id="searchBtn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                            <span id="searchBtnText">Cari</span>
+                            <svg id="searchSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Results -->
-            <div class="space-y-4">
+            <div id="resultsContainer" class="space-y-4">
                 @forelse($paths as $path)
                     <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -123,4 +127,53 @@
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('searchForm');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchBtnText = document.getElementById('searchBtnText');
+    const searchSpinner = document.getElementById('searchSpinner');
+    const resultsContainer = document.getElementById('resultsContainer');
+    
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        searchBtn.disabled = true;
+        searchBtnText.textContent = 'Mencari...';
+        searchSpinner.classList.remove('hidden');
+        
+        const formData = new FormData(searchForm);
+        const params = new URLSearchParams(formData).toString();
+        
+        fetch(`{{ route('registration.search') }}?${params}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.html) {
+                resultsContainer.innerHTML = data.html;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultsContainer.innerHTML = `
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    Terjadi kesalahan saat mencari jalur pendaftaran. Silakan coba lagi.
+                </div>
+            `;
+        })
+        .finally(() => {
+            // Reset loading state
+            searchBtn.disabled = false;
+            searchBtnText.textContent = 'Cari';
+            searchSpinner.classList.add('hidden');
+        });
+    });
+});
+</script>
 @endsection

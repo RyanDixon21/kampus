@@ -53,7 +53,7 @@ class ManageAbout extends Page implements HasForms
             'cta_title' => About::bySection('cta')->first()?->title ?? 'Siap Bergabung Bersama Kami?',
             'cta_description' => About::bySection('cta')->first()?->content ?? 'Wujudkan impian Anda untuk menjadi profesional di bidang teknologi',
             'cta_button_text' => About::bySection('cta_button')->first()?->title ?? 'Daftar Sekarang',
-            'cta_button_link' => About::bySection('cta_button')->first()?->content ?? route('registration.create'),
+            'cta_button_link' => About::bySection('cta_button')->first()?->content ?? route('registration.search'),
         ]);
     }
 

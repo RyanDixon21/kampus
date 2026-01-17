@@ -180,7 +180,7 @@ class AboutResource extends Resource
                         
                         Forms\Components\TextInput::make('cta_button_link')
                             ->label('Link Button')
-                            ->default(fn () => About::bySection('cta_button')->first()?->content ?? route('registration.create'))
+                            ->default(fn () => About::bySection('cta_button')->first()?->content ?? route('registration.search'))
                             ->required()
                             ->helperText('Bisa menggunakan URL lengkap (https://wa.me/...) atau path internal (/home, /tentang)'),
                     ])

@@ -60,6 +60,10 @@
                         <span class="text-gray-600">Tanggal Lahir</span>
                         <span class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($formData['date_of_birth'])->format('d F Y') }}</span>
                     </div>
+                    <div class="md:col-span-2 py-2 border-b">
+                        <span class="text-gray-600 block mb-1">Alamat Lengkap</span>
+                        <span class="font-medium text-gray-900">{{ $formData['address'] ?? '-' }}</span>
+                    </div>
                 </div>
             </div>
 

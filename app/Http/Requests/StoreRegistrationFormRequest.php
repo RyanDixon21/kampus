@@ -27,6 +27,7 @@ class StoreRegistrationFormRequest extends FormRequest
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'regex:/^(\+62|62|0)[0-9]{9,12}$/'],
             'date_of_birth' => ['required', 'date', 'before:' . now()->subYears(15)->format('Y-m-d')],
+            'address' => ['required', 'string', 'min:10', 'max:500'],
             
             // Program Selection
             'program_type' => ['required', 'in:IPA,IPS'],
@@ -60,6 +61,10 @@ class StoreRegistrationFormRequest extends FormRequest
             'date_of_birth.date' => 'Format tanggal lahir tidak valid',
             'date_of_birth.before' => 'Usia minimal 15 tahun',
             
+            'address.required' => 'Alamat lengkap wajib diisi',
+            'address.min' => 'Alamat minimal 10 karakter',
+            'address.max' => 'Alamat maksimal 500 karakter',
+            
             'program_type.required' => 'Jenis program wajib dipilih',
             'program_type.in' => 'Jenis program harus IPA atau IPS',
             
@@ -83,6 +88,7 @@ class StoreRegistrationFormRequest extends FormRequest
             'email' => 'Alamat Email',
             'phone' => 'No. HP',
             'date_of_birth' => 'Tanggal Lahir',
+            'address' => 'Alamat Lengkap',
             'program_type' => 'Jenis Program',
             'first_choice_program_id' => 'Pilihan 1',
             'second_choice_program_id' => 'Pilihan 2',

@@ -84,6 +84,15 @@
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
+                            <textarea name="address" id="address" rows="3"
+                                      class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 @error('address') border-red-500 @enderror"
+                                      placeholder="Masukkan alamat lengkap" required>{{ old('address', $formData['address'] ?? '') }}</textarea>
+                            @error('address')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 

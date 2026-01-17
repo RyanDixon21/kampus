@@ -32,7 +32,7 @@ class MultiStepRegistrationController extends Controller
     /**
      * Step 1: Show search page with filters
      */
-    public function searchPaths(Request $request): View
+    public function searchPaths(Request $request)
     {
         $filters = [
             'degree_level' => $request->get('degree_level'),
@@ -46,6 +46,12 @@ class MultiStepRegistrationController extends Controller
         $degreeLevels = ['S1' => 'Sarjana (S1)', 'D3' => 'Diploma (D3)', 'S2' => 'Magister (S2)'];
         $systemTypes = ['reguler' => 'Reguler', 'karyawan' => 'Karyawan'];
         $studyPrograms = StudyProgram::active()->orderBy('name')->get();
+
+        // If AJAX request, return JSON with HTML
+        if ($request->ajax() || $request->wantsJson()) {
+            $html = view('registration.partials.path-results', compact('paths'))->render();
+            return response()->json(['html' => $html]);
+        }
 
         return view('registration.search', compact(
             'paths', 
