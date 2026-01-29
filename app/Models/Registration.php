@@ -13,7 +13,6 @@ class Registration extends Model
         'registration_path_id',
         'first_choice_program_id',
         'second_choice_program_id',
-        'program_type',
         'name',
         'email',
         'phone',

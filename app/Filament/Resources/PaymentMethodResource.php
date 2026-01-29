@@ -57,6 +57,8 @@ class PaymentMethodResource extends Resource
                     ->label('Logo')
                     ->image()
                     ->directory('payment-methods')
+                    ->disk('public')
+                    ->visibility('public')
                     ->helperText('Upload logo metode pembayaran'),
 
                 TextInput::make('admin_fee')
@@ -97,6 +99,7 @@ class PaymentMethodResource extends Resource
 
                 ImageColumn::make('logo')
                     ->label('Logo')
+                    ->disk('public')
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder.png')),
 

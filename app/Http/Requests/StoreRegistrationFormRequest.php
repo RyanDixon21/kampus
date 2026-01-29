@@ -30,7 +30,6 @@ class StoreRegistrationFormRequest extends FormRequest
             'address' => ['required', 'string', 'min:10', 'max:500'],
             
             // Program Selection
-            'program_type' => ['required', 'in:IPA,IPS'],
             'first_choice_program_id' => ['required', 'exists:study_programs,id'],
             'second_choice_program_id' => ['nullable', 'exists:study_programs,id', 'different:first_choice_program_id'],
             
@@ -65,9 +64,6 @@ class StoreRegistrationFormRequest extends FormRequest
             'address.min' => 'Alamat minimal 10 karakter',
             'address.max' => 'Alamat maksimal 500 karakter',
             
-            'program_type.required' => 'Jenis program wajib dipilih',
-            'program_type.in' => 'Jenis program harus IPA atau IPS',
-            
             'first_choice_program_id.required' => 'Pilihan 1 program studi wajib dipilih',
             'first_choice_program_id.exists' => 'Program studi pilihan 1 tidak valid',
             
@@ -89,7 +85,6 @@ class StoreRegistrationFormRequest extends FormRequest
             'phone' => 'No. HP',
             'date_of_birth' => 'Tanggal Lahir',
             'address' => 'Alamat Lengkap',
-            'program_type' => 'Jenis Program',
             'first_choice_program_id' => 'Pilihan 1',
             'second_choice_program_id' => 'Pilihan 2',
             'referral_code' => 'Kode Referral',

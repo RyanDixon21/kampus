@@ -36,34 +36,62 @@
                         <h2 class="text-lg font-semibold text-gray-900 mb-4">Pilih Metode Pembayaran</h2>
                         <div class="space-y-3" id="paymentMethodList">
                             @forelse($paymentMethods as $index => $method)
-                                <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition payment-method-option {{ $index === 0 ? 'border-blue-500 bg-blue-50' : '' }}">
+                                <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all payment-method-option {{ $index === 0 ? 'border-blue-500 bg-blue-50' : 'border-gray-200' }}">
                                     <input type="radio" name="payment_method" value="{{ $method->code }}" 
-                                           class="text-blue-600 focus:ring-blue-500"
+                                           class="hidden"
                                            data-admin-fee="{{ $method->admin_fee }}"
                                            data-name="{{ $method->name }}"
                                            {{ $index === 0 ? 'checked' : '' }}>
-                                    <div class="ml-4 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="font-medium text-gray-900">{{ $method->name }}</span>
-                                            @if($method->logo)
-                                                <img src="{{ Storage::url($method->logo) }}" alt="{{ $method->name }}" class="h-8">
+                                    
+                                    <div class="flex-1 flex items-center justify-between gap-4">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="font-semibold text-gray-900 text-base">{{ $method->name }}</div>
+                                            @if($method->admin_fee > 0)
+                                                <p class="text-sm text-gray-500 mt-1">Biaya admin Rp {{ number_format($method->admin_fee, 0, ',', '.') }}</p>
+                                            @else
+                                                <p class="text-sm text-green-600 mt-1">Tanpa biaya admin</p>
                                             @endif
                                         </div>
-                                        @if($method->admin_fee > 0)
-                                            <p class="text-sm text-gray-500 mt-1">Biaya admin Rp {{ number_format($method->admin_fee, 0, ',', '.') }}</p>
+                                        
+                                        @if($method->logo)
+                                            @php
+                                                $logoPath = $method->logo;
+                                                $fullPath = str_starts_with($logoPath, 'payment-methods/') 
+                                                    ? $logoPath 
+                                                    : 'payment-methods/' . $logoPath;
+                                            @endphp
+                                            <div class="w-16 h-10 flex items-center justify-center bg-white rounded-lg border border-gray-200 flex-shrink-0">
+                                                <img src="{{ asset('storage/' . $fullPath) }}" 
+                                                     alt="{{ $method->name }}" 
+                                                     class="max-h-8 max-w-[60px] object-contain"
+                                                     onerror="this.parentElement.innerHTML='<svg class=\'w-6 h-6 text-gray-300\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z\'/></svg>'">
+                                            </div>
+                                        @else
+                                            <div class="w-16 h-10 flex items-center justify-center bg-gray-100 rounded-lg flex-shrink-0">
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                                </svg>
+                                            </div>
                                         @endif
                                     </div>
                                 </label>
                             @empty
-                                <label class="flex items-center p-4 border rounded-lg cursor-pointer border-blue-500 bg-blue-50 payment-method-option">
+                                <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer border-blue-500 bg-blue-50 payment-method-option">
                                     <input type="radio" name="payment_method" value="transfer_manual" 
-                                           class="text-blue-600 focus:ring-blue-500"
+                                           class="hidden"
                                            data-admin-fee="0"
                                            data-name="Transfer Manual"
                                            checked>
-                                    <div class="ml-4 flex-1">
-                                        <span class="font-medium text-gray-900">Transfer Manual</span>
-                                        <p class="text-sm text-gray-500 mt-1">Transfer ke rekening dan kirim bukti via WhatsApp</p>
+                                    <div class="flex-1 flex items-center justify-between gap-4">
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900 text-base">Transfer Manual</div>
+                                            <p class="text-sm text-gray-500 mt-1">Transfer ke rekening dan kirim bukti via WhatsApp</p>
+                                        </div>
+                                        <div class="w-16 h-10 flex items-center justify-center bg-gray-100 rounded-lg flex-shrink-0">
+                                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </label>
                             @endforelse
@@ -92,6 +120,28 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if($path->payment_note || $path->payment_items)
+                        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <h3 class="text-sm font-semibold text-blue-900 mb-3">Catatan</h3>
+                            
+                            @if($path->payment_note)
+                            <p class="text-sm text-blue-800 mb-3">{{ $path->payment_note }}</p>
+                            @endif
+                            
+                            @if($path->payment_items && count($path->payment_items) > 0)
+                            <div class="space-y-2">
+                                @foreach($path->payment_items as $item)
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-blue-800">{{ $item['name'] }}</span>
+                                    <span class="font-semibold text-blue-900">Rp {{ number_format($item['amount'], 0, ',', '.') }}</span>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+
                         <button type="button" id="submitPaymentBtn" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
@@ -191,7 +241,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.querySelectorAll('.payment-method-option').forEach(opt => {
                 opt.classList.remove('border-blue-500', 'bg-blue-50');
+                opt.classList.add('border-gray-200');
             });
+            this.closest('.payment-method-option').classList.remove('border-gray-200');
             this.closest('.payment-method-option').classList.add('border-blue-500', 'bg-blue-50');
             
             updateTotal();

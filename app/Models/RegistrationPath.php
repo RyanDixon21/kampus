@@ -18,6 +18,8 @@ class RegistrationPath extends Model
         'is_active',
         'quota',
         'requirements',
+        'payment_note',
+        'payment_items',
         'system_type',
         'degree_level',
         'wave',
@@ -29,7 +31,8 @@ class RegistrationPath extends Model
         'end_date' => 'datetime',
         'is_active' => 'boolean',
         'registration_fee' => 'decimal:2',
-        'requirements' => 'array'
+        'requirements' => 'array',
+        'payment_items' => 'array'
     ];
 
     /**

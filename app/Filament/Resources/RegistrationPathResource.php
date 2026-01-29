@@ -133,6 +133,35 @@ class RegistrationPathResource extends Resource
                     ->valueLabel('Keterangan')
                     ->columnSpanFull()
                     ->helperText('Daftar persyaratan untuk jalur pendaftaran ini'),
+
+                Textarea::make('payment_note')
+                    ->label('Catatan Pembayaran')
+                    ->rows(3)
+                    ->columnSpanFull()
+                    ->helperText('Catatan umum yang akan ditampilkan di atas daftar biaya')
+                    ->placeholder('Contoh: Biaya berikut akan ditagihkan setelah dinyatakan lulus seleksi'),
+
+                \Filament\Forms\Components\Repeater::make('payment_items')
+                    ->label('Daftar Biaya Lanjutan')
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Nama Biaya')
+                            ->required()
+                            ->placeholder('Contoh: Almamater, SPP, DPP'),
+                        
+                        TextInput::make('amount')
+                            ->label('Nominal')
+                            ->required()
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->placeholder('500000')
+                            ->helperText('Masukkan angka tanpa titik atau koma'),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull()
+                    ->defaultItems(0)
+                    ->addActionLabel('Tambah Item Biaya')
+                    ->helperText('Daftar biaya yang akan ditampilkan di halaman pembayaran'),
             ]);
     }
 

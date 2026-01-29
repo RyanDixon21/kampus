@@ -66,7 +66,6 @@ class RegistrationService
                 'registration_path_id' => $sessionData['registration_path_id'],
                 'first_choice_program_id' => $sessionData['first_choice_program_id'],
                 'second_choice_program_id' => $sessionData['second_choice_program_id'] ?? null,
-                'program_type' => $sessionData['program_type'] ?? null,
                 'name' => $sessionData['name'],
                 'email' => $sessionData['email'],
                 'phone' => $sessionData['phone'],

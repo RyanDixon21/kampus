@@ -72,10 +72,6 @@ class RegistrationResource extends Resource
                             ->label('Jalur Pendaftaran')
                             ->content(fn (?Registration $record): string => $record?->registrationPath?->name ?? '-'),
 
-                        Placeholder::make('program_type')
-                            ->label('Jenis Program')
-                            ->content(fn (?Registration $record): string => $record?->program_type ?? '-'),
-
                         Placeholder::make('firstChoiceProgram.name')
                             ->label('Program Studi Pilihan 1')
                             ->content(fn (?Registration $record): string => 
@@ -238,16 +234,6 @@ class RegistrationResource extends Resource
                     ->limit(40)
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('program_type')
-                    ->label('Tipe')
-                    ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
-                        'IPA' => 'success',
-                        'IPS' => 'info',
-                        default => 'gray',
-                    })
-                    ->toggleable(isToggledHiddenByDefault: true),
-
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
@@ -322,13 +308,6 @@ class RegistrationResource extends Resource
                 SelectFilter::make('first_choice_program_id')
                     ->label('Program Studi')
                     ->relationship('firstChoiceProgram', 'name'),
-
-                SelectFilter::make('program_type')
-                    ->label('Tipe Program')
-                    ->options([
-                        'IPA' => 'IPA',
-                        'IPS' => 'IPS',
-                    ]),
 
                 SelectFilter::make('payment_method')
                     ->label('Metode Pembayaran')

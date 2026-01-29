@@ -13,7 +13,6 @@ class StudyProgram extends Model
         'code',
         'faculty',
         'degree_level',
-        'program_type',
         'description',
         'is_active'
     ];
@@ -61,14 +60,6 @@ class StudyProgram extends Model
     public function scopeDegreeLevel($query, string $level)
     {
         return $query->where('degree_level', $level);
-    }
-
-    /**
-     * Scope to filter by program type (IPA/IPS)
-     */
-    public function scopeByProgramType($query, string $type)
-    {
-        return $query->where('program_type', $type);
     }
 
     /**

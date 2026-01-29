@@ -66,14 +66,6 @@ class StudyProgramResource extends Resource
                     ])
                     ->required(),
 
-                Select::make('program_type')
-                    ->label('Tipe Program')
-                    ->options([
-                        'IPA' => 'IPA (Sains)',
-                        'IPS' => 'IPS (Sosial)',
-                    ])
-                    ->helperText('Kategori program studi berdasarkan jurusan SMA'),
-
                 Textarea::make('description')
                     ->label('Deskripsi')
                     ->rows(3)
@@ -121,16 +113,6 @@ class StudyProgramResource extends Resource
                     })
                     ->sortable(),
 
-                TextColumn::make('program_type')
-                    ->label('Tipe')
-                    ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
-                        'IPA' => 'success',
-                        'IPS' => 'info',
-                        default => 'gray',
-                    })
-                    ->sortable(),
-
                 IconColumn::make('is_active')
                     ->label('Status')
                     ->boolean()
@@ -147,13 +129,6 @@ class StudyProgramResource extends Resource
                         'S1' => 'S1',
                         'S2' => 'S2',
                         'S3' => 'S3',
-                    ]),
-
-                SelectFilter::make('program_type')
-                    ->label('Tipe Program')
-                    ->options([
-                        'IPA' => 'IPA',
-                        'IPS' => 'IPS',
                     ]),
 
                 SelectFilter::make('is_active')

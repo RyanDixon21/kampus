@@ -100,19 +100,6 @@
                 <div class="bg-white rounded-xl shadow-sm border p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Pilihan Program Studi</h2>
                     <div class="space-y-4">
-                        <div>
-                            <label for="program_type" class="block text-sm font-medium text-gray-700 mb-1">Jenis Program yang Dituju <span class="text-red-500">*</span></label>
-                            <select name="program_type" id="program_type" 
-                                    class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 @error('program_type') border-red-500 @enderror"
-                                    required>
-                                <option value="">-- Pilih Jenis Program --</option>
-                                <option value="IPA" {{ old('program_type', $formData['program_type'] ?? '') == 'IPA' ? 'selected' : '' }}>IPA</option>
-                                <option value="IPS" {{ old('program_type', $formData['program_type'] ?? '') == 'IPS' ? 'selected' : '' }}>IPS</option>
-                            </select>
-                            @error('program_type')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="first_choice_program_id" class="block text-sm font-medium text-gray-700 mb-1">Pilihan 1 <span class="text-red-500">*</span></label>
@@ -122,7 +109,6 @@
                                     <option value="">-- Pilih Program Studi --</option>
                                     @foreach($programs as $program)
                                         <option value="{{ $program->id }}" 
-                                                data-type="{{ $program->program_type }}"
                                                 {{ old('first_choice_program_id', $formData['first_choice_program_id'] ?? '') == $program->id ? 'selected' : '' }}>
                                             {{ $program->degree_level }} - {{ $program->name }}
                                         </option>
@@ -139,7 +125,6 @@
                                     <option value="">-- Pilih Pilihan 2 (Opsional) --</option>
                                     @foreach($programs as $program)
                                         <option value="{{ $program->id }}"
-                                                data-type="{{ $program->program_type }}"
                                                 {{ old('second_choice_program_id', $formData['second_choice_program_id'] ?? '') == $program->id ? 'selected' : '' }}>
                                             {{ $program->degree_level }} - {{ $program->name }}
                                         </option>
@@ -175,33 +160,4 @@
         </div>
     </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const programType = document.getElementById('program_type');
-    const firstChoice = document.getElementById('first_choice_program_id');
-    const secondChoice = document.getElementById('second_choice_program_id');
-    
-    function filterPrograms() {
-        const selectedType = programType.value;
-        
-        [firstChoice, secondChoice].forEach(select => {
-            const options = select.querySelectorAll('option[data-type]');
-            options.forEach(option => {
-                if (!selectedType || option.dataset.type === selectedType) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
-                    if (option.selected) {
-                        select.value = '';
-                    }
-                }
-            });
-        });
-    }
-    
-    programType.addEventListener('change', filterPrograms);
-    filterPrograms();
-});
-</script>
 @endsection
