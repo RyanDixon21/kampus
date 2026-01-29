@@ -44,9 +44,9 @@
              x-transition:leave="transition ease-in duration-700"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="relative text-white overflow-hidden"
+             class="relative text-white"
              style="display: none; height: 550px;"
-             :style="currentSlide === {{ $index }} ? 'display: flex; height: 600px;' : 'display: none; height: 600px;'">
+             :style="currentSlide === {{ $index }} ? 'display: flex; height: 620px;' : 'display: none; height: 620px;'">
             
             <!-- Background Layer -->
             <div class="absolute inset-0 z-0">
@@ -84,11 +84,11 @@
                     
                     <!-- Title -->
                     <div class="mb-6 animate-fade-in" style="animation-delay: 0.1s;">
-                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-3 line-clamp-2">
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-3">
                             {{ $slide->title }}
                         </h1>
                         @if($slide->subtitle)
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300 line-clamp-2">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300" style="line-height: 1.3;">
                             {{ $slide->subtitle }}
                         </h2>
                         @endif
