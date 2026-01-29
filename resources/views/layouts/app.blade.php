@@ -31,7 +31,7 @@
                  this.updateActiveSection();
              },
              updateActiveSection() {
-                 const sections = ['beranda', 'berita', 'fasilitas', 'tendik'];
+                 const sections = ['beranda', 'berita', 'fasilitas', 'dosen'];
                  const scrollPosition = window.scrollY + 100;
                  
                  for (let section of sections) {
@@ -89,11 +89,11 @@
                        :class="{ 'text-blue-500 bg-blue-50': activeSection === 'fasilitas' }">
                         Fasilitas
                     </a>
-                    <a href="{{ route('home') }}#tendik" 
-                       @click="activeSection = 'tendik'"
+                    <a href="{{ route('home') }}#dosen" 
+                       @click="activeSection = 'dosen'"
                        class="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 font-medium"
-                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'tendik' }">
-                        Tendik
+                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'dosen' }">
+                        Dosen
                     </a>
                     
                     <!-- Akademik Dropdown -->
@@ -204,11 +204,11 @@
                        :class="{ 'text-blue-500 bg-blue-50': activeSection === 'fasilitas' }">
                         Fasilitas
                     </a>
-                    <a href="{{ route('home') }}#tendik" 
-                       @click="activeSection = 'tendik'; mobileMenuOpen = false"
+                    <a href="{{ route('home') }}#dosen" 
+                       @click="activeSection = 'dosen'; mobileMenuOpen = false"
                        class="text-gray-700 hover:text-blue-500 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all duration-200 font-medium"
-                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'tendik' }">
-                        Tendik
+                       :class="{ 'text-blue-500 bg-blue-50': activeSection === 'dosen' }">
+                        Dosen
                     </a>
                     
                     <!-- Akademik Dropdown Mobile -->
@@ -352,11 +352,11 @@
                             </svg>
                             Fasilitas
                         </a></li>
-                        <li><a href="{{ route('home') }}#tendik" class="hover:text-blue-300 transition-colors duration-200 flex items-center group">
+                        <li><a href="{{ route('home') }}#dosen" class="hover:text-blue-300 transition-colors duration-200 flex items-center group">
                             <svg class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
-                            Tendik
+                            Dosen
                         </a></li>
                     </ul>
                 </div>

@@ -24,11 +24,11 @@ class TendikResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
-    protected static ?string $navigationLabel = 'Tendik';
+    protected static ?string $navigationLabel = 'Dosen';
 
-    protected static ?string $modelLabel = 'Tendik';
+    protected static ?string $modelLabel = 'Dosen';
 
-    protected static ?string $pluralModelLabel = 'Tendik';
+    protected static ?string $pluralModelLabel = 'Dosen';
 
     protected static ?int $navigationSort = 14;
 
@@ -88,7 +88,7 @@ class TendikResource extends Resource
                 Toggle::make('is_active')
                     ->label('Aktif')
                     ->default(true)
-                    ->helperText('Hanya tendik aktif yang akan ditampilkan di website'),
+                    ->helperText('Hanya dosen aktif yang akan ditampilkan di website'),
             ]);
     }
 

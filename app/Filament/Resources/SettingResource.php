@@ -148,6 +148,23 @@ class SettingResource extends Resource
                     ])
                     ->columns(1),
 
+                Section::make('Konten Halaman - Section Dosen')
+                    ->schema([
+                        TextInput::make('dosen_section_title')
+                            ->label('Judul Section Dosen')
+                            ->maxLength(255)
+                            ->default(fn () => Setting::get('dosen_section_title', 'Dosen'))
+                            ->helperText('Judul yang ditampilkan di section dosen'),
+                        
+                        Textarea::make('dosen_section_description')
+                            ->label('Deskripsi Section Dosen')
+                            ->rows(2)
+                            ->maxLength(500)
+                            ->default(fn () => Setting::get('dosen_section_description', 'Tim pengajar profesional yang siap membimbing dan mendukung kegiatan akademik Anda'))
+                            ->helperText('Deskripsi singkat di bawah judul section dosen'),
+                    ])
+                    ->columns(1),
+
                 Section::make('Lokasi Kampus')
                     ->schema([
                         FileUpload::make('campus_images')

@@ -29,21 +29,13 @@ class WhyChooseUsForm
                     ->label('Icon')
                     ->required()
                     ->options([
-                        'book-open' => '📖 Buku (Book Open)',
-                        'academic-cap' => '🎓 Topi Wisuda (Academic Cap)',
-                        'briefcase' => '💼 Tas Kerja (Briefcase)',
-                        'users' => '👥 Pengguna (Users)',
-                        'building-library' => '🏛️ Perpustakaan (Library)',
-                        'beaker' => '🧪 Lab (Beaker)',
-                        'computer-desktop' => '💻 Komputer (Computer)',
-                        'light-bulb' => '💡 Lampu (Light Bulb)',
-                        'trophy' => '🏆 Trofi (Trophy)',
-                        'star' => '⭐ Bintang (Star)',
-                        'rocket-launch' => '🚀 Roket (Rocket)',
-                        'shield-check' => '🛡️ Perisai (Shield)',
-                        'chart-bar' => '📊 Grafik (Chart)',
-                        'globe-alt' => '🌍 Globe (Globe)',
-                        'cog' => '⚙️ Pengaturan (Cog)',
+                        'badge' => '🏅 Badge (Akreditasi/Sertifikat)',
+                        'shield' => '🛡️ Shield (Keamanan/Standar)',
+                        'sparkles' => '✨ Sparkles (Penghargaan/Prestasi)',
+                        'award' => '🏆 Award (Medali/Juara)',
+                        'check-circle' => '✅ Check Circle (Verifikasi/Approved)',
+                        'academic-cap' => '🎓 Academic Cap (Pendidikan/Akademik)',
+                        'star-badge' => '⭐ Star Badge (Bintang/Excellence)',
                     ])
                     ->searchable()
                     ->native(false),
