@@ -13,13 +13,12 @@ class StudyProgramSeeder extends Seeder
     public function run(): void
     {
         $programs = [
-            // Fakultas Ilmu Sosial dan Politik (IPS)
+            // Fakultas Ilmu Sosial dan Politik
             [
                 'name' => 'Administrasi Publik',
                 'code' => 'S1-AP',
                 'faculty' => 'Fakultas Ilmu Sosial dan Politik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang administrasi dan kebijakan publik.',
                 'is_active' => true,
             ],
@@ -28,7 +27,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-IKOM',
                 'faculty' => 'Fakultas Ilmu Sosial dan Politik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang komunikasi massa, public relations, dan jurnalistik.',
                 'is_active' => true,
             ],
@@ -37,18 +35,16 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-IP',
                 'faculty' => 'Fakultas Ilmu Sosial dan Politik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang sistem politik, pemerintahan, dan hubungan internasional.',
                 'is_active' => true,
             ],
 
-            // Fakultas Ekonomi dan Bisnis (IPS)
+            // Fakultas Ekonomi dan Bisnis
             [
                 'name' => 'Akuntansi',
                 'code' => 'S1-AK',
                 'faculty' => 'Fakultas Ekonomi dan Bisnis',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang akuntansi keuangan, manajemen, dan perpajakan.',
                 'is_active' => true,
             ],
@@ -57,7 +53,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-MJ',
                 'faculty' => 'Fakultas Ekonomi dan Bisnis',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang manajemen bisnis, pemasaran, dan keuangan.',
                 'is_active' => true,
             ],
@@ -66,18 +61,16 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-EP',
                 'faculty' => 'Fakultas Ekonomi dan Bisnis',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang ekonomi makro, mikro, dan pembangunan.',
                 'is_active' => true,
             ],
 
-            // Fakultas Teknik (IPA)
+            // Fakultas Teknik
             [
                 'name' => 'Teknik Informatika',
                 'code' => 'S1-TI',
                 'faculty' => 'Fakultas Teknik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPA',
                 'description' => 'Program studi yang mempelajari tentang pemrograman, sistem informasi, dan teknologi komputer.',
                 'is_active' => true,
             ],
@@ -86,7 +79,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-TS',
                 'faculty' => 'Fakultas Teknik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPA',
                 'description' => 'Program studi yang mempelajari tentang konstruksi bangunan, jalan, dan jembatan.',
                 'is_active' => true,
             ],
@@ -95,7 +87,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-TE',
                 'faculty' => 'Fakultas Teknik',
                 'degree_level' => 'S1',
-                'program_type' => 'IPA',
                 'description' => 'Program studi yang mempelajari tentang sistem kelistrikan dan elektronika.',
                 'is_active' => true,
             ],
@@ -106,7 +97,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-PBI',
                 'faculty' => 'Fakultas Keguruan dan Ilmu Pendidikan',
                 'degree_level' => 'S1',
-                'program_type' => 'IPS',
                 'description' => 'Program studi yang mempelajari tentang pengajaran bahasa Inggris.',
                 'is_active' => true,
             ],
@@ -115,7 +105,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'S1-PM',
                 'faculty' => 'Fakultas Keguruan dan Ilmu Pendidikan',
                 'degree_level' => 'S1',
-                'program_type' => 'IPA',
                 'description' => 'Program studi yang mempelajari tentang pengajaran matematika.',
                 'is_active' => true,
             ],
@@ -126,7 +115,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'D3-AK',
                 'faculty' => 'Fakultas Ekonomi dan Bisnis',
                 'degree_level' => 'D3',
-                'program_type' => 'IPS',
                 'description' => 'Program diploma yang mempelajari tentang akuntansi praktis.',
                 'is_active' => true,
             ],
@@ -135,7 +123,6 @@ class StudyProgramSeeder extends Seeder
                 'code' => 'D3-TK',
                 'faculty' => 'Fakultas Teknik',
                 'degree_level' => 'D3',
-                'program_type' => 'IPA',
                 'description' => 'Program diploma yang mempelajari tentang perangkat keras dan jaringan komputer.',
                 'is_active' => true,
             ],
