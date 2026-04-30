@@ -138,6 +138,49 @@
                     </div>
                 </div>
 
+                <!-- Class Type Selection (Only for Mandiri) -->
+                @if(strtolower($path->name) === 'mandiri' || str_contains(strtolower($path->name), 'mandiri'))
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Pilihan Kelas <span class="text-red-500">*</span></h2>
+                    <p class="text-sm text-gray-600 mb-4">Pilih kelas yang sesuai dengan kebutuhan Anda</p>
+                    <div class="space-y-3">
+                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition @error('class_type') border-red-500 @enderror">
+                            <input type="radio" name="class_type" value="reguler" 
+                                   {{ old('class_type', $formData['class_type'] ?? '') == 'reguler' ? 'checked' : '' }}
+                                   class="mt-1 text-blue-600 focus:ring-blue-500" required>
+                            <div class="ml-3">
+                                <p class="font-semibold text-gray-900">Mandiri Reguler</p>
+                                <p class="text-sm text-gray-600">Pagi | Senin - Sabtu</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                            <input type="radio" name="class_type" value="karyawan"
+                                   {{ old('class_type', $formData['class_type'] ?? '') == 'karyawan' ? 'checked' : '' }}
+                                   class="mt-1 text-blue-600 focus:ring-blue-500">
+                            <div class="ml-3">
+                                <p class="font-semibold text-gray-900">Mandiri Karyawan</p>
+                                <p class="text-sm text-gray-600">Malam | Senin - Sabtu</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                            <input type="radio" name="class_type" value="eksekutif"
+                                   {{ old('class_type', $formData['class_type'] ?? '') == 'eksekutif' ? 'checked' : '' }}
+                                   class="mt-1 text-blue-600 focus:ring-blue-500">
+                            <div class="ml-3">
+                                <p class="font-semibold text-gray-900">Mandiri Eksekutif</p>
+                                <p class="text-sm text-gray-600">Pagi | Sabtu - Minggu</p>
+                            </div>
+                        </label>
+                    </div>
+                    @error('class_type')
+                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                @else
+                <!-- Hidden field for KIP (auto reguler) -->
+                <input type="hidden" name="class_type" value="reguler">
+                @endif
+
                 <!-- Referral Section -->
                 <div class="bg-white rounded-xl shadow-sm border p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Referral</h2>

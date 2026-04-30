@@ -33,6 +33,9 @@ class StoreRegistrationFormRequest extends FormRequest
             'first_choice_program_id' => ['required', 'exists:study_programs,id'],
             'second_choice_program_id' => ['nullable', 'exists:study_programs,id', 'different:first_choice_program_id'],
             
+            // Class Type
+            'class_type' => ['required', 'in:reguler,karyawan,eksekutif'],
+            
             // Optional
             'referral_code' => ['nullable', 'string', 'max:50'],
         ];
@@ -69,6 +72,9 @@ class StoreRegistrationFormRequest extends FormRequest
             
             'second_choice_program_id.exists' => 'Program studi pilihan 2 tidak valid',
             'second_choice_program_id.different' => 'Pilihan 2 harus berbeda dengan Pilihan 1',
+            
+            'class_type.required' => 'Pilihan kelas wajib dipilih',
+            'class_type.in' => 'Pilihan kelas tidak valid',
         ];
     }
 

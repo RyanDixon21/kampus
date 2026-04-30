@@ -131,10 +131,10 @@
                             
                             @if($path->payment_items && count($path->payment_items) > 0)
                             <div class="space-y-2">
-                                @foreach($path->payment_items as $item)
+                                @foreach($path->payment_items as $itemName => $itemAmount)
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-blue-800">{{ $item['name'] }}</span>
-                                    <span class="font-semibold text-blue-900">Rp {{ number_format($item['amount'], 0, ',', '.') }}</span>
+                                    <span class="text-blue-800">{{ $itemName }}</span>
+                                    <span class="font-semibold text-blue-900">Rp {{ number_format($itemAmount, 0, ',', '.') }}</span>
                                 </div>
                                 @endforeach
                             </div>

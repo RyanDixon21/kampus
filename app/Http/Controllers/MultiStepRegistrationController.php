@@ -151,6 +151,7 @@ class MultiStepRegistrationController extends Controller
             'address' => $request->address,
             'first_choice_program_id' => $request->first_choice_program_id,
             'second_choice_program_id' => $request->second_choice_program_id,
+            'class_type' => $request->class_type,
             'referral_code' => $request->referral_code,
         ]);
         Session::put('registration.step', 2);
@@ -387,6 +388,7 @@ class MultiStepRegistrationController extends Controller
             // Prepare session data for registration service
             $sessionData = [
                 'registration_path_id' => $pathId,
+                'class_type' => $formData['class_type'] ?? 'reguler',
                 'first_choice_program_id' => $formData['first_choice_program_id'],
                 'second_choice_program_id' => $formData['second_choice_program_id'] ?? null,
                 'name' => $formData['name'],
