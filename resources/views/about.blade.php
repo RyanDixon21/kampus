@@ -347,6 +347,159 @@
             </div>
             @endif
         </div>
+
+        <!-- Certificates Carousel Section -->
+        @if($certificates->count() > 0)
+        <div class="mt-8">
+            <!-- Carousel Container -->
+            <div x-data="{ 
+                currentSlide: 0,
+                totalSlides: {{ $certificates->count() }},
+                slidesPerView: 3,
+                lightboxOpen: false,
+                lightboxIndex: 0,
+                
+                get maxSlide() {
+                    return Math.max(0, this.totalSlides - this.slidesPerView);
+                },
+                
+                nextSlide() {
+                    if (this.currentSlide < this.maxSlide) {
+                        this.currentSlide++;
+                    }
+                },
+                
+                prevSlide() {
+                    if (this.currentSlide > 0) {
+                        this.currentSlide--;
+                    }
+                },
+                
+                openLightbox(index) {
+                    this.lightboxIndex = index;
+                    this.lightboxOpen = true;
+                },
+                
+                closeLightbox() {
+                    this.lightboxOpen = false;
+                },
+                
+                nextImage() {
+                    this.lightboxIndex = (this.lightboxIndex + 1) % this.totalSlides;
+                },
+                
+                prevImage() {
+                    this.lightboxIndex = (this.lightboxIndex - 1 + this.totalSlides) % this.totalSlides;
+                }
+            }" 
+            @keydown.escape.window="lightboxOpen = false"
+            @keydown.arrow-left.window="lightboxOpen && prevImage()"
+            @keydown.arrow-right.window="lightboxOpen && nextImage()"
+            class="relative">
+                
+                <!-- Carousel Wrapper -->
+                <div class="overflow-hidden">
+                    <div class="flex transition-transform duration-500 ease-out" 
+                         :style="`transform: translateX(-${currentSlide * (100 / slidesPerView)}%)`">
+                        @foreach($certificates as $index => $certificate)
+                        <div class="w-full md:w-1/3 flex-shrink-0 px-3">
+                            <div class="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                                 @click="openLightbox({{ $index }})">
+                                <div class="aspect-[4/3] bg-gray-50 overflow-hidden">
+                                    <img src="{{ asset('storage/' . $certificate->image) }}" 
+                                         alt="{{ $certificate->title ?? 'Sertifikat' }}"
+                                         class="w-full h-full object-contain hover:scale-105 transition-transform duration-300">
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons (only show if more than 3 certificates) -->
+                @if($certificates->count() > 3)
+                <button @click="prevSlide()" 
+                        x-show="currentSlide > 0"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-xl hover:bg-gray-100 transition-all z-10">
+                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button @click="nextSlide()" 
+                        x-show="currentSlide < maxSlide"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-xl hover:bg-gray-100 transition-all z-10">
+                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                @endif
+
+                <!-- Lightbox Modal -->
+                <template x-teleport="body">
+                    <div x-show="lightboxOpen" 
+                         x-cloak
+                         @click="closeLightbox()"
+                         class="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0">
+                        
+                        <!-- Close Button -->
+                        <button @click.stop="closeLightbox()" 
+                                class="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-10">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+
+                        <!-- Navigation Buttons -->
+                        @if($certificates->count() > 1)
+                        <button @click.stop="prevImage()" 
+                                class="absolute left-4 text-white/80 hover:text-white transition-colors z-10">
+                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <button @click.stop="nextImage()" 
+                                class="absolute right-4 text-white/80 hover:text-white transition-colors z-10">
+                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        @endif
+
+                        <!-- Image Container -->
+                        <div @click.stop class="max-w-6xl w-full">
+                            @foreach($certificates as $index => $certificate)
+                            <div x-show="lightboxIndex === {{ $index }}" 
+                                 class="flex flex-col items-center"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100">
+                                <img src="{{ asset('storage/' . $certificate->image) }}" 
+                                     alt="{{ $certificate->title ?? 'Sertifikat' }}"
+                                     class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+                                @if($certificate->title || $certificate->description)
+                                <div class="mt-6 text-center text-white max-w-2xl">
+                                    @if($certificate->title)
+                                    <h4 class="text-2xl font-bold mb-2">{{ $certificate->title }}</h4>
+                                    @endif
+                                    @if($certificate->description)
+                                    <p class="text-gray-300 text-lg">{{ $certificate->description }}</p>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        @endif
     </div>
 </section>
 

@@ -9,6 +9,7 @@ use App\Models\Tendik;
 use App\Models\HeroCard;
 use App\Models\WhyChooseUs;
 use App\Models\About;
+use App\Models\AccreditationCertificate;
 
 class HomeController extends Controller
 {
@@ -132,6 +133,9 @@ class HomeController extends Controller
         $akreditasiHeader = About::active()->bySection('akreditasi_header')->first();
         $akreditasiItems = About::active()->bySection('akreditasi')->ordered()->get();
         
+        // Load accreditation certificates
+        $certificates = AccreditationCertificate::active()->ordered()->get();
+        
         // Load CTA data
         $cta = About::active()->bySection('cta')->first();
         $ctaButton = About::active()->bySection('cta_button')->first();
@@ -139,6 +143,6 @@ class HomeController extends Controller
         // Load akreditasi (for backward compatibility)
         $accreditation = About::active()->bySection('akreditasi')->first()?->content ?? 'B';
 
-        return view('about', compact('settings', 'sejarah', 'visi', 'misi', 'nilaiNilai', 'nilaiHeader', 'akreditasiHeader', 'akreditasiItems', 'cta', 'ctaButton', 'accreditation'));
+        return view('about', compact('settings', 'sejarah', 'visi', 'misi', 'nilaiNilai', 'nilaiHeader', 'akreditasiHeader', 'akreditasiItems', 'certificates', 'cta', 'ctaButton', 'accreditation'));
     }
 }

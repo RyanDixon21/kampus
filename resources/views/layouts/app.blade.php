@@ -14,6 +14,13 @@
     
     <!-- Vite CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Alpine.js x-cloak style -->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-primary-900 via-primary-800 to-blue-900 font-sans antialiased">
     <!-- Navigation -->
