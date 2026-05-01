@@ -82,7 +82,7 @@
                 @if($mandiriPath || $kipPath)
                     <!-- Mandiri Card -->
                     @if($mandiriPath)
-                    <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-500 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-500 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col min-h-[600px]">
                         <div class="text-center mb-6">
                             <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,53 +90,53 @@
                                 </svg>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $mandiriPath->name }}</h3>
-                            <p class="text-gray-600">{{ $mandiriPath->description }}</p>
+                            <p class="text-gray-600 text-sm">{{ $mandiriPath->description }}</p>
                         </div>
 
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="space-y-3 mb-6 flex-grow">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Periode Pendaftaran</p>
-                                    <p class="font-semibold">{{ $mandiriPath->start_date->format('d M Y') }} - {{ $mandiriPath->end_date->format('d M Y') }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Periode Pendaftaran</p>
+                                    <p class="font-semibold text-sm">{{ $mandiriPath->start_date->format('d M Y') }} - {{ $mandiriPath->end_date->format('d M Y') }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Biaya Pendaftaran</p>
-                                    <p class="font-bold text-xl text-blue-600">Rp {{ number_format($mandiriPath->registration_fee, 0, ',', '.') }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Biaya Pendaftaran</p>
+                                    <p class="font-bold text-lg text-blue-600">Rp {{ number_format($mandiriPath->registration_fee, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                             @if($mandiriPath->wave)
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Gelombang</p>
-                                    <p class="font-semibold">{{ $mandiriPath->wave }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Gelombang</p>
+                                    <p class="font-semibold text-sm">{{ $mandiriPath->wave }}</p>
                                 </div>
                             </div>
                             @endif
+
+                            <div class="bg-blue-50 rounded-lg p-4 mt-4">
+                                <p class="text-sm font-semibold text-blue-900 mb-2">Pilihan Kelas:</p>
+                                <ul class="text-sm text-blue-800 space-y-1">
+                                    <li>• Reguler (Pagi | Senin - Sabtu)</li>
+                                    <li>• Karyawan (Malam | Senin - Sabtu)</li>
+                                    <li>• Eksekutif (Pagi | Sabtu - Minggu)</li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <div class="bg-blue-50 rounded-lg p-4 mb-6">
-                            <p class="text-sm font-semibold text-blue-900 mb-2">Pilihan Kelas:</p>
-                            <ul class="text-sm text-blue-800 space-y-1">
-                                <li>• Reguler (Pagi | Senin - Sabtu)</li>
-                                <li>• Karyawan (Malam | Senin - Sabtu)</li>
-                                <li>• Eksekutif (Pagi | Sabtu - Minggu)</li>
-                            </ul>
-                        </div>
-
-                        <form action="{{ route('registration.path.select', $mandiriPath) }}" method="POST">
+                        <form action="{{ route('registration.path.select', $mandiriPath) }}" method="POST" class="mt-auto">
                             @csrf
-                            <button type="submit" class="block w-full text-center px-6 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-all transform hover:scale-105">
+                            <button type="submit" class="block w-full text-center px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-base hover:bg-blue-700 transition-all transform hover:scale-105">
                                 Daftar Jalur Mandiri
                                 <svg class="inline-block ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -148,58 +148,58 @@
 
                     <!-- KIP Card -->
                     @if($kipPath)
-                    <div class="bg-white rounded-2xl shadow-lg border-2 border-green-500 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-cyan-400 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col min-h-[600px]">
                         <div class="text-center mb-6">
-                            <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                                 </svg>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $kipPath->name }}</h3>
-                            <p class="text-gray-600">{{ $kipPath->description }}</p>
+                            <p class="text-gray-600 text-sm">{{ $kipPath->description }}</p>
                         </div>
 
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="space-y-3 mb-6 flex-grow">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-cyan-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Periode Pendaftaran</p>
-                                    <p class="font-semibold">{{ $kipPath->start_date->format('d M Y') }} - {{ $kipPath->end_date->format('d M Y') }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Periode Pendaftaran</p>
+                                    <p class="font-semibold text-sm">{{ $kipPath->start_date->format('d M Y') }} - {{ $kipPath->end_date->format('d M Y') }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-cyan-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Biaya Pendaftaran</p>
-                                    <p class="font-bold text-xl text-green-600">Rp {{ number_format($kipPath->registration_fee, 0, ',', '.') }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Biaya Pendaftaran</p>
+                                    <p class="font-bold text-lg text-cyan-600">Rp {{ number_format($kipPath->registration_fee, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                             @if($kipPath->wave)
-                            <div class="flex items-center text-gray-700">
-                                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-start text-gray-700">
+                                <svg class="w-5 h-5 text-cyan-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                 </svg>
-                                <div>
-                                    <p class="text-sm text-gray-500">Gelombang</p>
-                                    <p class="font-semibold">{{ $kipPath->wave }}</p>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500">Gelombang</p>
+                                    <p class="font-semibold text-sm">{{ $kipPath->wave }}</p>
                                 </div>
                             </div>
                             @endif
+
+                            <div class="bg-cyan-50 rounded-lg p-4 mt-4">
+                                <p class="text-sm font-semibold text-cyan-900 mb-2">Kelas:</p>
+                                <p class="text-sm text-cyan-800">• Reguler (Pagi | Senin - Sabtu)</p>
+                                <p class="text-xs text-cyan-700 mt-2 italic">*Otomatis masuk kelas Reguler</p>
+                            </div>
                         </div>
 
-                        <div class="bg-green-50 rounded-lg p-4 mb-6">
-                            <p class="text-sm font-semibold text-green-900 mb-2">Kelas:</p>
-                            <p class="text-sm text-green-800">• Reguler (Pagi | Senin - Sabtu)</p>
-                            <p class="text-xs text-green-700 mt-2 italic">*Otomatis masuk kelas Reguler</p>
-                        </div>
-
-                        <form action="{{ route('registration.path.select', $kipPath) }}" method="POST">
+                        <form action="{{ route('registration.path.select', $kipPath) }}" method="POST" class="mt-auto">
                             @csrf
-                            <button type="submit" class="block w-full text-center px-6 py-4 bg-green-600 text-white rounded-xl font-bold text-lg hover:bg-green-700 transition-all transform hover:scale-105">
+                            <button type="submit" class="block w-full text-center px-6 py-3 bg-cyan-500 text-white rounded-xl font-bold text-base hover:bg-cyan-600 transition-all transform hover:scale-105">
                                 Daftar Jalur KIP
                                 <svg class="inline-block ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
