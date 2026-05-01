@@ -71,10 +71,22 @@
             <div class="bg-white rounded-xl shadow-sm border p-6">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Pilihan Program Studi</h2>
                 <div class="space-y-3">
+                    @if(!empty($formData['class_type']))
                     <div class="flex justify-between py-2 border-b">
-                        <span class="text-gray-600">Jenis Program</span>
-                        <span class="font-medium text-gray-900">{{ $formData['program_type'] ?? '-' }}</span>
+                        <span class="text-gray-600">Kelas Yang Dipilih</span>
+                        <span class="font-medium text-gray-900">
+                            @if($formData['class_type'] === 'reguler')
+                                Mandiri Reguler (Pagi | Senin - Sabtu)
+                            @elseif($formData['class_type'] === 'karyawan')
+                                Mandiri Karyawan (Malam | Senin - Sabtu)
+                            @elseif($formData['class_type'] === 'eksekutif')
+                                Mandiri Eksekutif (Pagi | Sabtu - Minggu)
+                            @else
+                                {{ ucfirst($formData['class_type']) }}
+                            @endif
+                        </span>
                     </div>
+                    @endif
                     <div class="flex justify-between py-2 border-b">
                         <span class="text-gray-600">Pilihan 1</span>
                         <span class="font-medium text-gray-900">{{ $firstChoiceProgram->degree_level }} - {{ $firstChoiceProgram->name }}</span>

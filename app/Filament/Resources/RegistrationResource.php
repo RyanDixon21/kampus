@@ -72,6 +72,15 @@ class RegistrationResource extends Resource
                             ->label('Jalur Pendaftaran')
                             ->content(fn (?Registration $record): string => $record?->registrationPath?->name ?? '-'),
 
+                        Placeholder::make('class_type')
+                            ->label('Kelas Yang Dipilih')
+                            ->content(fn (?Registration $record): string => match($record?->class_type) {
+                                'reguler' => 'Mandiri Reguler (Pagi | Senin - Sabtu)',
+                                'karyawan' => 'Mandiri Karyawan (Malam | Senin - Sabtu)',
+                                'eksekutif' => 'Mandiri Eksekutif (Pagi | Sabtu - Minggu)',
+                                default => ucfirst($record?->class_type ?? '-'),
+                            }),
+
                         Placeholder::make('firstChoiceProgram.name')
                             ->label('Program Studi Pilihan 1')
                             ->content(fn (?Registration $record): string => 
@@ -211,6 +220,24 @@ class RegistrationResource extends Resource
                 TextColumn::make('registrationPath.name')
                     ->label('Jalur')
                     ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('class_type')
+                    ->label('Kelas')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'reguler' => 'Reguler',
+                        'karyawan' => 'Karyawan',
+                        'eksekutif' => 'Eksekutif',
+                        default => ucfirst($state),
+                    })
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'reguler' => 'success',
+                        'karyawan' => 'warning',
+                        'eksekutif' => 'info',
+                        default => 'gray',
+                    })
                     ->sortable()
                     ->toggleable(),
 

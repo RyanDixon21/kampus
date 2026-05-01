@@ -11,6 +11,7 @@ class Registration extends Model
     protected $fillable = [
         'registration_number',
         'registration_path_id',
+        'class_type',
         'first_choice_program_id',
         'second_choice_program_id',
         'name',

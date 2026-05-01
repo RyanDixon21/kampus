@@ -160,6 +160,61 @@ class AboutResource extends Resource
                             }),
                     ]),
 
+                Section::make('Sertifikat & Dokumentasi')
+                    ->description('Upload sertifikat akreditasi yang akan ditampilkan di halaman Tentang')
+                    ->schema([
+                        Forms\Components\Repeater::make('certificate_items')
+                            ->label('')
+                            ->schema([
+                                Forms\Components\Hidden::make('id'),
+                                
+                                Forms\Components\FileUpload::make('image')
+                                    ->label('Gambar Sertifikat')
+                                    ->image()
+                                    ->directory('certificates')
+                                    ->disk('public')
+                                    ->visibility('public')
+                                    ->required()
+                                    ->imageEditor()
+                                    ->imageEditorAspectRatios([
+                                        null,
+                                        '16:9',
+                                        '4:3',
+                                        '1:1',
+                                    ])
+                                    ->maxSize(5120)
+                                    ->imagePreviewHeight('250')
+                                    ->helperText('Max 5MB. Klik untuk edit gambar sebelum upload.')
+                                    ->columnSpanFull(),
+                                
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Judul Sertifikat')
+                                    ->maxLength(255)
+                                    ->placeholder('Contoh: Sertifikat Akreditasi BAN-PT')
+                                    ->helperText('Opsional'),
+                                
+                                Forms\Components\Textarea::make('description')
+                                    ->label('Deskripsi')
+                                    ->rows(3)
+                                    ->maxLength(500)
+                                    ->placeholder('Deskripsi singkat tentang sertifikat...')
+                                    ->helperText('Opsional'),
+                            ])
+                            ->defaultItems(0)
+                            ->addActionLabel('+ Tambah Sertifikat')
+                            ->reorderable()
+                            ->reorderableWithButtons()
+                            ->collapsible()
+                            ->collapsed(false)
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Sertifikat Baru')
+                            ->deleteAction(
+                                fn ($action) => $action->requiresConfirmation()
+                            )
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
                 Section::make('Call to Action (CTA)')
                     ->schema([
                         Forms\Components\TextInput::make('cta_title')

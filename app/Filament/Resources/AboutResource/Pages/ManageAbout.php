@@ -4,6 +4,7 @@ namespace App\Filament\Resources\AboutResource\Pages;
 
 use App\Filament\Resources\AboutResource;
 use App\Models\About;
+use App\Models\AccreditationCertificate;
 use Filament\Actions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -30,6 +31,7 @@ class ManageAbout extends Page implements HasForms
     {
         $nilai = About::bySection('nilai')->ordered()->get();
         $akreditasi = About::bySection('akreditasi')->ordered()->get();
+        $certificates = AccreditationCertificate::active()->ordered()->get();
         
         $this->form->fill([
             'sejarah_title' => About::bySection('sejarah')->first()?->title ?? 'Sejarah Kami',
@@ -49,6 +51,12 @@ class ManageAbout extends Page implements HasForms
                 'icon' => $item->icon ?? ($item->order == 1 ? 'badge' : ($item->order == 2 ? 'shield' : 'sparkles')),
                 'title' => $item->title,
                 'content' => $item->content,
+            ])->toArray(),
+            'certificate_items' => $certificates->map(fn($item) => [
+                'id' => $item->id,
+                'title' => $item->title,
+                'image' => $item->image,
+                'description' => $item->description,
             ])->toArray(),
             'cta_title' => About::bySection('cta')->first()?->title ?? 'Siap Bergabung Bersama Kami?',
             'cta_description' => About::bySection('cta')->first()?->content ?? 'Wujudkan impian Anda untuk menjadi profesional di bidang teknologi',
@@ -169,6 +177,41 @@ class ManageAbout extends Page implements HasForms
                 'is_active' => true,
             ]
         );
+
+        // Handle Certificates
+        // Get existing certificate IDs from form data
+        $existingIds = collect($data['certificate_items'] ?? [])
+            ->pluck('id')
+            ->filter()
+            ->toArray();
+
+        // Delete certificates that are not in the form data
+        AccreditationCertificate::whereNotIn('id', $existingIds)->delete();
+
+        // Update or create certificates
+        if (isset($data['certificate_items']) && is_array($data['certificate_items'])) {
+            foreach ($data['certificate_items'] as $index => $certificate) {
+                if (isset($certificate['id']) && $certificate['id']) {
+                    // Update existing certificate
+                    AccreditationCertificate::where('id', $certificate['id'])->update([
+                        'title' => $certificate['title'] ?? null,
+                        'image' => $certificate['image'],
+                        'description' => $certificate['description'] ?? null,
+                        'order' => $index,
+                        'is_active' => true,
+                    ]);
+                } else {
+                    // Create new certificate
+                    AccreditationCertificate::create([
+                        'title' => $certificate['title'] ?? null,
+                        'image' => $certificate['image'],
+                        'description' => $certificate['description'] ?? null,
+                        'order' => $index,
+                        'is_active' => true,
+                    ]);
+                }
+            }
+        }
 
         Notification::make()
             ->title('Berhasil disimpan')
